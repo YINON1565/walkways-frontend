@@ -1,0 +1,90 @@
+.notification-container {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100%;
+        visibility: hidden;
+        width: 0;
+        transition: width .3s, visibility .1s;
+        z-index: 5;
+        box-shadow: $shadow3;
+        // text-transform: uppercase;
+        background-color: #434252;
+        color: $clr3;        
+        &.notifications-open {
+            visibility: visible;
+            width: 100%;
+            @include for-mobile-layout {
+                width: 500px;
+            }
+        }
+        padding: 10px;
+        .container-title {
+            margin:  10px 10px 30px;
+            // align-items: flex-start;
+            h3 {
+                font-size: 30px;
+                margin: 0;
+            }
+            .close-popap-img {
+                width: 23px;
+                // text-align: start;
+            }
+        }
+    
+        .notification-list {
+            display: grid;
+            gap: 10px;
+            padding: 5px;
+        
+            .notification-preview{
+                .container-link-img {
+                    border-bottom: 1.1px solid #ffedb84f;             
+                }
+                p {
+                    font-size: 16px;
+                    line-height: 2.2ch;
+                    @include for-mobile-layout {
+                        line-height: 2.7ch;
+                        font-size: 22px;
+                    }
+                    margin-top: 1ch;
+                    margin-bottom: 0;
+                    span {
+                        opacity: .6;
+                    }
+                }
+                .notification-btn {
+                    section {
+                        margin-top: 16px;
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 10px;
+                        button {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-evenly;
+                            padding: 15px;
+                            font-size: 19px;
+                            img {
+                                width: 18px;
+                            }
+                            @include for-mobile-layout {
+                                padding: 20px;
+                                font-size: 27px;
+                                img {
+                                    width: auto;
+                                }
+                            }
+                        }
+                    }
+                    > img {
+                        cursor: pointer;
+                        margin-top: 16px;
+                        // display: flex;
+                        // float: right;
+                    }
+                }
+            }
+        }
+}

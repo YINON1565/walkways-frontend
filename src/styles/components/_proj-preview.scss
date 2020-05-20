@@ -1,0 +1,95 @@
+.proj-preview {
+    border-radius: 3px;
+    width: 100%;
+    height: 100%;
+    // background-color: #242424;;
+    background-color: lighten($clr2, 25%);
+    .details-img {
+        img {
+            width: 200px;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 0px;
+            border-top-right-radius: 3px;
+            object-fit: cover;
+            height: 12rem;
+        }
+
+        .fully-booked{
+            position: absolute;
+        }
+        @media screen and (max-width: 1080px) {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            &:before {
+              content: "";
+              display: block;
+              width: 100%;
+              padding-top: 56%;
+            }
+            > * {
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+            }  
+            > img {
+              height: 100%;
+              width: 100%;
+            }
+            > .fully-booked{
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                z-index: 1;
+
+
+            }
+        }       
+    }
+    .members-needed {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .organiztion-container {
+        img {
+            width: rem(18px);
+            padding-top: rem(4px);
+            padding-left: rem(4px);
+        }
+
+    }
+    .proj-txt {
+        min-height: rem(150px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .proj-card {
+        border-radius: 3px;
+        @include for-normal-layout {
+            flex-direction: row;
+        }
+        .proj-txt {
+            padding: 5px;
+        }
+        h5,
+        h2 {
+            margin: 0;
+            width: fit-content;
+        }
+        h2 {
+            font-family: Sen;
+            font-weight: lighter;
+        }
+        h5 {
+            font-family: Montserrat;
+        }
+    }
+    .organiztion-container {
+        display: flex;
+        align-items: center;
+    }
+}

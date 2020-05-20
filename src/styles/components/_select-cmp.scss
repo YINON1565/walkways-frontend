@@ -1,0 +1,144 @@
+.select-cmp {
+    display: none;
+    &.filters-open {
+        display: block;
+    }
+    @include for-mobile-layout {
+        display: block;
+    }
+    box-shadow: $shadow1;
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 14px;
+    &.open {
+        &::after{
+            z-index: 11;
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 10%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            // border-color:  transparent transparent lighten($clr1, 35%) transparent;
+            border-color:  transparent transparent #fff transparent;
+        } 
+    }
+    .list-select {
+        z-index: 10;
+        margin: 0;
+        position: absolute;
+        top: 120%;
+        left: 0;
+        box-shadow: $shadow2;
+        width: 100%;
+        // background-color: lighten($clr1, 35%);
+        // color: $clr3;
+        background-color: #fff;
+        color: #000;
+        border-radius: 3px;
+        // border-bottom-left-radius: 3px;
+        // border-bottom-right-radius: 3px;
+        > * {
+            padding: 15px;
+            font-size: 20px;
+            font-family: Montserrat;
+            transition: background-color .3s, color .3s;
+            &:last-child {
+                border-bottom-left-radius: 3px;
+                border-bottom-right-radius: 3px;
+            }
+            &:hover {
+                background-color: lighten( $clr1, 40%);
+                mix-blend-mode: luminosity;
+
+            }
+        }    
+    }
+    span {
+        p {
+            font-size: 16px;
+            margin-inline-start: 2ch;
+            opacity: 0.6;
+            position: absolute;
+            z-index: -1;
+        }
+        height: 100%;
+        input {
+            background-color: initial;
+            border: none;
+            box-shadow: none;
+            cursor: pointer;
+            z-index: 5;
+            height: 100%;
+            &.active{
+                height: auto;
+
+            }
+            width: 100%;
+            outline: none;
+            padding: 0 1ch;
+        }
+       
+        div {
+            display: inline-flex;
+            flex-wrap: wrap;
+            .selected {
+                margin: 3px;
+                font-size: 10px;   
+                box-shadow: 0 0 2px 1px rgba($color: #999, $alpha: .4);
+                width: fit-content;
+                padding: 4px 6px;
+                border-radius: 3px;
+                display: flex;
+                justify-content: space-between;
+                cursor: pointer;
+                &::after {
+                    content: 'X';
+                    visibility: hidden;
+                    margin-inline-start: 2ch;
+                    transition: .3s;
+                }
+                &:hover {
+                    box-shadow: 0 0 2px 1px rgba($color: #999, $alpha: .6);
+                    &::after{
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+
+    }
+    .selecteds {
+            position: absolute;
+            top: 10%;
+            right: 10%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, auto);
+            gap: 5px;
+            width: 50%;
+            >* {
+                box-shadow: 0 0 2px 1px rgba($color: #999, $alpha: .4);
+                width: fit-content;
+                padding: 5px 10px;
+                border-radius: 3px;
+                display: flex;
+                justify-content: space-between;
+                cursor: pointer;
+                &::after {
+                    content: 'X';
+                    visibility: hidden;
+                    margin-inline-start: 2ch;
+                    transition: .3s;
+                }
+                &:hover {
+                    box-shadow: 0 0 2px 1px rgba($color: #999, $alpha: .6);
+                    &::after{
+                        visibility: visible;
+                    }
+                }
+            }
+    }
+}

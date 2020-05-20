@@ -1,0 +1,112 @@
+.proj-list-filtered {
+    margin: 0 auto;
+    @include for-narrow-layout {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    position: relative;
+    .main-content {
+        flex-basis: 45%;
+    }
+    ul {
+        padding: rem(5px);
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: rem(15px);
+        @include for-normal-layout {
+        grid-template-columns: 1fr;
+           
+            // display: flex;
+            // flex-direction: column;
+        }
+    }
+    .side-bar {
+        .map {
+            height: 90vw;
+            @include for-mobile-layout {
+                height: 60vw;
+            }
+            @include for-narrow-layout {
+                height: 500px;
+            }
+        }
+        @include for-narrow-layout {
+            position: sticky;
+            flex-basis: 55%; 
+            padding: 5px;
+            top: 80px;
+        }
+    }
+    .category-header {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 0%, rgba(64, 64, 64, 1) 100%);
+    }
+    .header {
+        margin-top: 5px;
+        .category-header-title {
+            color: white;
+            font-family: Sen;
+            font-size: 30px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            /* width: 500px; */
+        }
+        .category-header-desc {
+            font-family: Montserrat;
+            padding: 5px;
+            border-bottom: 0.5px solid lightgrey;
+            justify-content: end;
+            color: white;
+            padding: 5px;
+            padding-left: 10px;
+            font-size: rem(12px);
+            letter-spacing: 0.3px;
+            line-height: 1.2;
+
+            @include for-mobile-layout {
+                font-size: rem(16px);
+                line-height: 1.3;
+                
+            }
+            
+            @include for-normal-layout {
+                line-height: 1.5;
+                font-size: rem(17px);
+            }
+
+        }
+        img {
+            width: 100%;
+            /* height: 10% ; */
+        }
+    }
+    .el-rate {
+        height: fit-content;
+        margin-bottom: 12px;
+        .el-rate__icon {
+            font-size: 30px;
+        }
+    }
+    h2 {
+        font-size: 22px;
+    }
+    h5 {
+        font-size: 16px;
+    }
+    @include for-narrow-layout {
+        
+        .el-rate {
+            .el-rate__icon {
+                font-size: 35px;
+            }
+        }
+        h2 {
+            font-size: 24px;
+        }
+        h5 {
+            font-size: 18px;
+        }
+    }
+}

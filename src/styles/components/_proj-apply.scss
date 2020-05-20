@@ -1,0 +1,79 @@
+.proj-apply {
+    padding: 10px;
+    // background-color: #000;
+    .container-title {
+        margin:  10px 10px 30px;
+        align-items: flex-start;
+        h1 {
+            font-size: 40px;
+            margin: 0;
+        }
+        .close-popap-img {
+            width: 25px;
+            text-align: start;
+        }
+    }
+    .form-apply {
+        
+        overflow:auto;
+        display: grid;
+        grid-template-columns: 2fr 5fr;
+        grid-template-rows: 3fr 2fr;
+        gap: rem(10px);
+
+        > * {
+            height: 60px;
+            // flex-direction: column;
+            * {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                // width: 100%;
+                height: 100%;
+            }
+        }
+
+        .input-txt-apply {
+            grid-column: 1/3;
+            .el-textarea__inner {
+                background-color: lighten($clr3, 8%) ;
+                transition: background-color .3s;
+                &:hover {
+                    background-color: lighten($clr3, 12%) ;
+                }
+            }
+        }
+        
+        .input-number-apply {
+            grid-column: 1/2;
+
+            &.el-input-number{
+                // background-color: red;
+                .el-input-number__increase, .el-input-number__decrease {
+                    background-color: darken($clr3, 2%);
+                    transition: background-color .3s;
+                    &:hover {
+                        background-color: lighten($clr3, 0%) ;
+                    }
+                    &.is-disabled {
+                        background-color: lighten($clr3, 4%) ;
+                    }
+                }
+                .el-input__inner {
+                    background-color: lighten($clr3, 8%) ;
+                    
+                }
+                // width: 100%;
+            }
+        }
+        button {
+            background-color: darken($clr3, 2%);
+            transition: background-color .3s;
+            &:hover {
+                background-color: lighten($clr3, 3%) ;
+            }
+            // height: 40px;
+        }
+    }
+ 
+}

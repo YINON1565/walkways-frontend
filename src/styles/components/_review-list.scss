@@ -1,0 +1,6 @@
+.review-list {
+    >*:not(:last-child){
+        font-size: 22px;
+        font-weight: 900;
+    }  
+}

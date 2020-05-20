@@ -1,0 +1,102 @@
+.my-video {
+    
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    @include for-medium-mobile-layout {
+        bottom: initial;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    border-radius: 3px;
+    box-shadow: $shadow3;
+    z-index: 10;
+    header {
+        padding: 0 30px;
+        height: 100px;
+        background-color: #3e3c4d;
+        img:first-child {
+            width: 25px;
+        }
+        @include for-medium-mobile-layout {
+            img:first-child {
+                width: auto;
+            }
+            height: 60px;
+            background-color: #4f4b64;
+        }
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        img {
+            cursor: pointer;
+            &:hover {
+                mix-blend-mode: luminosity;
+            }
+        }
+       
+    }
+    .container-canvas-video {
+        width: 100vw;
+        height: calc(100vh - 180px);
+        @include for-medium-mobile-layout {
+            width: 400px;
+            height: 300px;
+        }
+        padding: 0 1px;
+        background-color: #4f4b64;
+    }
+    footer {
+        height: 80px;
+        background-color: #dedde8;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+    }
+    video {
+        transform: rotateY(180deg);
+        width: 100vw;
+        height: calc(100vh - 180px);
+        @include for-medium-mobile-layout {
+            width: 400px;
+            height: 300px;
+        }
+        &.loading {
+            background-image: url('~@/assets/svg/loading2.svg');
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+        &.stop-video {
+            display: none;
+        }
+    }
+    .profile-img {
+        width: 100vw;
+        height: calc(100vh - 180px);
+        @include for-medium-mobile-layout {
+            width: 400px;
+            height: 300px;
+        }
+    }
+    canvas {
+        display: none;
+    }
+    .capture-img-contianer, .confirm-img-contianer {
+        border-radius: 50%;
+        padding: 15px;
+        background-color:  #595573;
+        transition: background-color .3s;
+        &:hover {
+          background-color:  #6a6683;
+        }
+        width: fit-content;
+        position: absolute;
+        bottom: 50px;
+        left: 50%;
+        transform: translate(-50%);
+        z-index: 1000;
+        cursor: pointer;
+    }
+    .confirm-img-contianer {
+        left: 15%;
+    }
+}

@@ -1,0 +1,61 @@
+.map {
+  height: 500px;
+}
+
+.img-on-map-container {
+  position: fixed;
+  transform: translate(-50%,-50%);
+  z-index: 100;
+  width: rem(300px);
+  border-radius: 5px;
+  box-shadow: $shadow3;
+  background-color: lighten($clr2, 25%);
+  cursor: pointer;
+  .not-allowed {
+    cursor: not-allowed;
+
+  }
+
+  .proj-img {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 100%;
+  }
+
+  .proj-content {
+    padding: rem(10px);
+    h4 {
+      margin: 0 0 10px;
+    }
+    
+    h5 {
+      margin: 0;
+      padding: 0;
+    }
+
+    .review-avarage {
+      margin: 10px 0 0;
+    }
+  }
+
+  .world-details {
+    margin: 10px 0 0;
+    display: flex;
+    align-items: center;
+    height: 25px;
+    img {
+        width: rem(18px);
+    }
+
+    :nth-child(2) {
+        margin: 0 1ch;
+    }
+}
+}
+
+
+  // .container-map {
+  //     background-color: gray;
+  //     mix-blend-mode: multiply;
+  //     filter: grayscale(0.8);
+  // }

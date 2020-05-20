@@ -1,0 +1,171 @@
+.login-page {
+    overflow: hidden;
+
+    background-image: url("https://www.thebalancesmb.com/thmb/zLMhuQKCL24jIckZmKqw6E4n2hI=/2121x1414/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-585859259-57997e215f9b589aa94c4243.jpg");
+    background-size: cover;
+    padding: 0;
+    form {
+
+        &:first-child{
+            margin-bottom: 10px;
+        }
+
+        margin: 0 auto;
+        width: 97vw;
+        margin-bottom: rem(50px);
+        // padding: 35px 0;
+        @include for-mini-mobile-layout {
+            width: 80vw;
+            width: fit-content;        
+        }
+        @include for-mobile-layout {
+            margin: 0;
+            padding: 35px;
+        }
+        @include for-normal-layout {
+
+        }
+        height: 100%;
+        color: #4c2b00;
+        h1 {
+            text-align: center;
+            margin-bottom: rem(30px);
+        }        
+        h2 {
+            font-size: 22px;
+        }
+        h3 {
+            text-align: center;
+            font-size: 18px;
+            color: #513456;
+            @include for-mobile-layout {
+                font-size: 21px;
+            }
+        }
+
+        input,
+        input:-webkit-autofill {
+            padding: rem(15px);
+            font-family: Montserrat;
+            margin-bottom: rem(10px);
+            color: rgb(243, 234, 250);
+            -webkit-box-shadow: 0 0 0px 30px #a794b3 inset !important;
+            -webkit-text-fill-color: rgb(243, 234, 250) !important;
+            transition: -webkit-box-shadow .3s;
+            &::placeholder {
+                color: rgb(243, 234, 250);
+                opacity: 0.6;
+            }
+            &:hover, &:focus, &:active {
+                -webkit-box-shadow: 0 0 0px 30px #d2c2db inset !important;
+            }
+        }
+     
+        button  {
+            padding: rem(15px);
+            margin-top: rem(5px);
+            font-size: 22px;
+            font-weight: 900;
+            font-family: Montserrat;
+            background-color: #aa6a1ca6;
+            color: rgb(243, 234, 250);
+            &:hover {
+                background-color: #aa6a1cde;     
+            }
+        }
+        .signup-form {
+            @include for-mobile-layout {
+                width: 100%;
+            }
+            h1 {
+                margin: 2px;
+            }
+            h3 {
+                color: white;
+            }
+            button {
+                background-color: #ffefdbd1;
+                color: #0c0a06;
+                &:hover {
+                    background-color: #de963fa6;     
+                }
+            }
+        }
+    }
+    .login-link {
+        cursor: pointer;
+        color: #76caff;
+        font-weight: 900;
+        font-size: 21px;
+    }
+}
+
+.container-img-profile {
+    order: -1;
+    height: fit-content;
+    .avatar {
+        background-color: #626262;
+        width: rem(150px);
+        height: rem(150px);
+    }
+    img {
+        transition: opacity .3s;
+        &:hover {
+            opacity: 0.5;
+        }
+    }
+    &:hover {
+        background-image: url('~@/assets/svg/camera-regular.svg');
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+    &.open-select {
+        background-image: url('~@/assets/svg/camera-regular.svg');
+        background-position: center center;
+        background-repeat: no-repeat;
+        img {
+            opacity: 0.5;
+
+        }
+    }
+    position: relative;
+    .select {
+        background-color: #fff;
+        width: fit-content;
+        position: absolute;
+        top: 70%;
+        border-radius: 3px;
+        box-shadow: $shadow3;
+        left: 72%;
+        transform: translate(-50%);
+        &::after{
+            z-index: 11;
+            content: "";
+            position: absolute;
+            top: -16%;
+            left: 15%;
+            margin-left: -5px;
+            border-width: 7px;
+            border-style: solid;
+            border-color:  transparent transparent #fff transparent;
+        } 
+        li {
+            margin: 0;
+            padding: 9px;
+            font-size: 22px;
+            transition: background-color .3s, color .3s;
+            border-radius: 3px;
+            cursor: pointer;
+            &.upload {
+                border-bottom-left-radius: 0px;
+                border-bottom-right-radius: 0px;
+            }
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            &:hover {
+                background-color: rgb(59, 43, 90);
+                color: rgb(233, 223, 255);
+            }
+        }
+    }
+}
