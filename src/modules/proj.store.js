@@ -1,40 +1,14 @@
 import { projService } from '../services/proj.service.js'
-import {utilService} from '../services/util.service.js'
-import mapService from '../services/map.service.js'
-
 
 export default {
     state: {
         projs: [],
-        currProjs: []
+        currProjs: [],
+        projsCount: null
         // currProj: null
-    },
-    mutations: {
-        setProjs(state, { projs }) {
-            state.projs = projs
-        },
-        setCurrProjs(state, { projs }) {
-            state.currProjs = projs
-        },
-        setProj(state, { proj }) {
-            state.currProj = proj
-        },
-        addProj(state, { proj }) {
-            state.projs.unshift(proj)
-        },
-        updateProj(state, { proj }) {
-            const idx = state.projs.findIndex(currProj => currProj._id === proj._id)
-            state.projs.splice(idx, 1, proj)
-        },
-        removeProj(state, { projId }) {
-            const idx = state.projs.findIndex(currProj => currProj._id === projId)
-            state.projs.splice(idx, 1)
-        }
     },
     getters: {
         projs(state) {
-            console.log(state.projs, 'state.projs in stor');
-            
             return state.projs
         },
         currProjs(state) {
@@ -42,6 +16,9 @@ export default {
         },
         currProj(state){
             return state.proj
+        },
+        projsCount(state){
+            return state.projsCount
         },
         countries(state){
             let countriesArr = [];
@@ -62,14 +39,50 @@ export default {
             return creators;
         },
     },
+    mutations: {
+        setProjs(state, { projs }) {
+            state.projs = projs
+        },
+        setCurrProjs(state, { projs }) {
+            state.currProjs = projs
+        },
+        pushToCurrProjs(state, { projs }){
+            state.currProjs.push(...projs)
+        },
+        setProjsCount(state, {projsCount}){
+            state.projsCount = projsCount
+        },
+        setProj(state, { proj }) {
+            state.currProj = proj
+        },
+        addProj(state, { proj }) {
+            state.projs.unshift(proj)
+        },
+        updateProj(state, { proj }) {
+            const idx = state.projs.findIndex(currProj => currProj._id === proj._id)
+            state.projs.splice(idx, 1, proj)
+        },
+        removeProj(state, { projId }) {
+            const idx = state.projs.findIndex(currProj => currProj._id === projId)
+            state.projs.splice(idx, 1)
+        }
+    },
+   
     actions: {
-        async loadProjs(context, { filterBy }) {
-            const isFilterBy = !!filterBy
-            const projs = await projService.query(filterBy)
-            if (!isFilterBy) {
-                context.commit({ type: 'setProjs', projs })            
+        async loadProjsCount(context) {
+            const projsCount = await projService.getProjsCount();
+            context.commit({ type: 'setProjsCount' , projsCount })            
+            console.log(projsCount, 'projsCount');
+            return projsCount;
+        },
+        async loadProjs(context, { filterBy, limit, skip }) {
+            const projs = await projService.query(filterBy, limit, skip)
+            if (skip > 0) {
+                context.commit({ type: 'pushToCurrProjs', projs })            
             }
+            else if (limit || filterBy) {
                 context.commit({ type: 'setCurrProjs', projs })            
+            }
             return projs
         },
 
@@ -81,6 +94,8 @@ export default {
         async removeProj(context, { projId }) {
             const msg = await projService.remove(projId)
             context.commit({ type: 'removeProj', projId });
+            await projService.changeProjsCount(-1)
+            context.dispatch({ type: 'loadProjsCount'})
             return msg
         },
         async saveProj(context, { proj }) {
@@ -90,6 +105,10 @@ export default {
                 type: (isEdit) ? 'updateProj' : 'addProj',
                 proj: savedProj
             })
+            if (!isEdit && savedProj) {
+                await projService.changeProjsCount(1)
+                context.dispatch({ type: 'loadProjsCount'})
+            }
             return savedProj
         },
         async getFilteredProjHeader(context, { filter }) {

@@ -1,5 +1,5 @@
-import router from '@/router'
-import store from '@/store'
+// import router from '@/router'
+// import store from '@/store'
 
 const BASE_URL = process.env.NODE_ENV !== 'development'
     ? '/api/'

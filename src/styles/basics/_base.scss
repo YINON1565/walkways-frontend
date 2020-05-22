@@ -249,6 +249,15 @@ select {
     }
 }
 
+.save-loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    z-index: 10;
+}
+
 // .h1-l {@include h1-l;}
 // .h1-s {@include h1-s;}
 // .h2 {@include h2;}

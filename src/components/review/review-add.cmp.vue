@@ -44,7 +44,9 @@ export default {
       //   });
       //   return;
       // }
-      this.$emit("save", this.review);
+      console.log(' hi in revire add');
+      
+      this.$emit("saveReview", this.review);
     },
     scrollTo(ev) {
       window.scrollTo(0, ev.target.offsetTop - 200);

@@ -1,8 +1,8 @@
 <template>
   <section class="carousel-proj-container">
     <section
-      v-for="proj in projs"
-      :key="proj._id"
+      v-for="(proj, i) in projs"
+      :key="i"
       @click="openDetails(proj._id)"
       :title="proj.description.substring(0,80) +'... Click to read more!!'"
       class="carousel-proj-preview"
@@ -23,7 +23,28 @@
             <span v-else>{{proj.position.region}},</span>
             <span>{{proj.position.country}}</span>
           </h5>
-          <review-avarage-by-id class="review-avarage" :id="proj._id" />
+          <section  class="review-avarage">
+           <el-rate
+            class="el-rate-avarage"
+            v-if="proj.rate.average"
+            v-model="proj.rate.average"
+            disabled
+            show-score
+            text-color="#0b757d"
+            :score-template="`${proj.rate.average.toFixed(1)} (${proj.rate.length})`"
+            :colors="colors"
+          ></el-rate> 
+           <el-rate
+            class="el-rate-avarage"
+            v-else
+            disabled
+            show-score
+            text-color="#0b757d"
+            :score-template="`0 (0)`"
+            :colors="colors"
+          ></el-rate> 
+        </section>
+          <!-- <review-avarage-by-id class="review-avarage" :id="proj._id" /> -->
         </section>
       </div>
     </section>
@@ -35,6 +56,11 @@ import reviewAvarageById from "../review/review-avarage-by-id.vue";
 export default {
   props: {
     projs: Array
+  },
+  data() {
+    return {
+      colors: this.$store.getters.colors,
+    }
   },
   methods: {
     openDetails(id) {

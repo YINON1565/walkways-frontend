@@ -1,7 +1,4 @@
 import { userService } from '../services/user.service.js'
-// import socketService from '../services/socket.service.js';
-// import Swal from "sweetalert2"
-
 
 var localLoggedinUser = null;
 if (sessionStorage.loggedinUser) localLoggedinUser = JSON.parse(sessionStorage.loggedinUser);
@@ -17,7 +14,8 @@ export default {
             imgUrl: "",
             isAdmin: false,
             notifications: []
-        }
+        },
+         usersCount: null
     },
     getters: {
         users(state) {
@@ -30,7 +28,9 @@ export default {
         newUserCred(state) {
             return state.newUserCred
         },
-        
+         usersCount(state){
+            return state.usersCount
+        },
     },
     mutations: {
         setUser(state, { user }) {
@@ -45,24 +45,38 @@ export default {
         setNewUserCred(state, {newUserCred}){
             
             state.newUserCred = newUserCred
-        }
+        },
+        setUsersCount(state, {usersCount}){
+            state.usersCount = usersCount
+        },
     },
     actions: {
+        async loadUsersCount(context) {
+            const usersCount = await userService.getUsersCount();
+            context.commit({ type: 'setUsersCount' , usersCount })            
+            console.log(usersCount, 'usersCount');
+            return usersCount;
+        },
         async login(context, { credentials }) {
             const user = await userService.login(credentials);
             if (user !== 'err') {
                 context.commit({ type: 'setUser', user })
+                context.commit({ type: 'setBy' })
             }            
             return user;
         },
         async signup(context, { newUserCred }) {
             const user = await userService.signup(newUserCred)
             context.commit({ type: 'setUser', user })
+            context.commit({ type: 'setBy' })
+            await userService.changeUsersCount(1)
+            context.dispatch({ type: 'loadUsersCount'})
             return user;
         },
         async logout(context) {
             var res = await userService.logout()
             context.commit({ type: 'setUser', user: null })
+            context.commit({ type: 'setBy' })
             return res
         },
         async loadUsers(context) {
@@ -78,6 +92,8 @@ export default {
         async removeUser(context, { userId }) {
             var msg = await userService.remove(userId);
             context.commit({ type: 'removeUser', userId })
+            await userService.changeUsersCount(-1)
+            context.dispatch({ type: 'loadUsersCount'})
             return msg;
         },
         async updateUser(context, { user }) {   

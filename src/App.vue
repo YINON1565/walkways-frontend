@@ -31,15 +31,22 @@ export default {
       require("./assets/audio/notification.mp3")
     );
     // TODO: TRANSFER TO HOME
-    await this.$store.dispatch({ type: "loadReviewsCount" });
+    // const projs = this.$store.getters.projs;
+    // const creators = this.$store.getters.creators;
+    // const users = this.$store.getters.users;
+    
+    // if (!projs.length || !this.creators.length) {
+    //   await this.$store.dispatch({ type: "loadProjs" });
+    // }
+    // if (!users.length) {
+    //   await this.$store.dispatch({ type: "loadUsers" });
+    // }
   },
   mounted() {
     eventBus.$on("connectSockets", () => this.connectSockets());
     eventBus.$on("disconnectSockets", () => this.disconnectSockets());
     eventBus.$on("removeReview", (reviewId)=> this.removeReview(reviewId));
-    document.title = this.loggedinUser
-      ? `(${this.loggedinUser.notifications.length}) Walkways`
-      : "Walkways";
+    
   },
   destroyed() {
     eventBus.$off("connectSockets", () => this.connectSockets());

@@ -187,6 +187,11 @@ export default {
     },
     toglleActive() {
       this.isActive = !this.isActive;
+    },
+    setTitle(){
+      document.title = this.loggedinUser
+      ? `(${this.loggedinUser.notifications.length}) Walkways`
+      : "Walkways";
     }
   },
   created() {
@@ -196,6 +201,7 @@ export default {
     this.categories = projService.loadCategoties();
   },
   mounted() {
+    this.setTitle()
     // window.addEventListener("scroll", this.handleScroll);
     document
       .querySelector(".screen")
@@ -214,9 +220,7 @@ export default {
   },
   watch: {
     loggedinUser() {
-      document.title = this.loggedinUser
-        ? `(${this.loggedinUser.notifications.length}) Walkways`
-        : "Walkways";
+     this.setTitle()
     },
     "$route.path": {
       handler() {

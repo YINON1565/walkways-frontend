@@ -1,33 +1,11 @@
-import { reviewService } from '../services/review.service.js';
 import { userService } from '../services/user.service.js';
-
-function _getBy() {
-    var by = {
-        _id: 1,
-        fullName: 'Anonymous',
-        imgUrl: '../../assets/png/login.png'
-    }
-
-    const user = JSON.parse(sessionStorage.getItem('loggedinUser'))
-        // const user = userService.getLoggeinUser()
-
-    if (user) {
-        by = {
-            _id: user._id,
-            fullName: user.fullName,
-            imgUrl: user.imgUrl
-        }
-    }
-    return by
-}
-
+import { reviewService } from '../services/review.service.js';
+// import { utilService } from '../services/util.service.js';
 export default {
     state: {
         reviews: [],
         reviewsCount: null,
-        // currReviews:[],
-        // currReviewsForUser:[],
-        by: _getBy(),
+        by: userService.getBy(),
         color: ["#a687ec", "#4c207b", "#555076"],
     },
     getters: {
@@ -35,15 +13,9 @@ export default {
             return state.reviews;
         },
         reviewsCount(state) {
+            console.log(state.reviewsCount, 'reviewsCount in getters');
             return state.reviewsCount;
         },
-        // currReviews(state) {
-        //     console.log(state.reviews.length);
-        //     return state.currReviews;
-        // },
-        // currReviewsForUser(state) {
-        //     return state.currReviewsForUser;
-        // },
         by(state) {
             return state.by;
         },
@@ -56,7 +28,12 @@ export default {
             state.reviews = reviews;
         },
         setReviewsCount(state, { reviewsCount }){
+            
+            console.log(reviewsCount, 'reviewsCount in mutations');
             state.reviewsCount = reviewsCount;
+        },
+        setBy(state){
+            state.by = userService.getBy()
         },
         // setCurrReviews(state, { reviews }) {
         //     state.currReviews = reviews;
@@ -82,7 +59,6 @@ export default {
             return reviewsCount;
         },
         async loadReviews(context, { id, isSetReviews = false }) {
-            
             const reviews = await reviewService.getReviews(id);
             if (isSetReviews){
                 context.commit({ type: 'setReviews', reviews })            
@@ -95,20 +71,19 @@ export default {
         async saveReview(context, { review }) {            
             var isEdit = !!review._id;
             review = await reviewService.saveReview(review);
-            // console.log('review.about._id in store after:', review.about._id);
-            // var user = await userService.getById(review.about._id)
-            // console.log('user1:', user);
-            // const reviews = await reviewService.getReviews(user._id)
-            // user.rate = await reviews.reduce((a,b) => a + b.rate, 0) / (reviews.length)
-            // var user = await userService.update(user)
-            // console.log(user);
             context.commit({ type: (isEdit) ? 'updateReview' : 'addReview', review })
+            if (!isEdit && review) {
+                await reviewService.changeReviewsCount(1)
+                context.dispatch({ type: 'loadReviewsCount'})
+            }
             return review;
         },
         async removeReview(context, { reviewId }) {
             var msg = await reviewService.remove(reviewId);
             context.commit({ type: 'removeReview', reviewId })
-            return msg;
+                await reviewService.changeReviewsCount(-1)
+                context.dispatch({ type: 'loadReviewsCount'})
+                return msg;
         },
     }
 }

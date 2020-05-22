@@ -3,34 +3,37 @@ import { storageService } from "./storage.service.js";
 import httpService from "./http.service.js";
 
 const KEY_REVIEWS = 'reviews'
+const KEY_REVIEWS_COUNT = 'reviewsCount'
 
 export const reviewService = {
     getReviewsCount,
     getReviews,
     remove,
     saveReview,
+    changeReviewsCount
+}
+
+function changeReviewsCount(diff) {
+   var reviewsCount = storageService.load(KEY_REVIEWS_COUNT)
+   if (reviewsCount) {
+       reviewsCount += diff
+       storageService.store(KEY_REVIEWS_COUNT, reviewsCount)
+   }
 }
 
 async function getReviews(id) {
-    
-    // var reviews = storageService.load(KEY_REVIEWS)
-    // if (!reviews){
-    //     reviews = _createReviews()
-    //     storageService.store(KEY_REVIEWS, reviews)
-    // }
-    // if (userId){
-    //     return reviews.filter(review=>{
-    //         return review.about._id === userId
-    //     })
-    // } else return reviews;
-    // return httpService.get(`review`);
     return (!id) ?
-        httpService.get(`review`) : httpService.get(`review/${id}`);
-
+    httpService.get(`review`) : 
+    httpService.get(`review/${id}`);
 }
 
 async function getReviewsCount(){
-   return httpService.get('review/count');
+   var reviewsCount = storageService.load(KEY_REVIEWS_COUNT)
+   if (!reviewsCount) {
+       reviewsCount = await httpService.get('review/count');
+       storageService.store(KEY_REVIEWS_COUNT, reviewsCount)
+   } 
+   return reviewsCount
 }
 
 async function remove(reviewId) {

@@ -1,6 +1,9 @@
 <template>
   <transition name="fade">
     <div class="user-profile width-container height-container" v-if="user">
+      <div v-if="isSaveLoading" class="save-loading">
+        <img src="../../assets/svg/rolling2.svg" alt />
+      </div>
       <div class="main-content">
         <div>
           <div class="user-profile-inside-container flex col a-center">
@@ -25,6 +28,7 @@
                 type="text"
                 v-if="loggedinUser && (loggedinUser._id === user._id)"
                 v-model="fullName"
+                @input="onInputName"
               />
               <!--  SHOW-MODE -->
               <p v-else>{{user.fullName}}</p>
@@ -133,7 +137,8 @@ export default {
       projApplied: null,
       projs: null,
       isLoading: false,
-      isNotificationsOpen: false
+      isNotificationsOpen: false,
+      isSaveLoading: false
     };
   },
   async created() {
@@ -162,23 +167,26 @@ export default {
   },
   methods: {
     async setCurrUser(){
-      window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
+        this.toggleLoading()
     const userId = this.$route.params.id;
     console.log(userId, 'userId');
     
     const user = await userService.getById(userId);
     this.user = JSON.parse(JSON.stringify(user));
-    this.imgUrl = user.imgUrl;
+    this.imgUrl = this.user.imgUrl;
     await this.$store.dispatch({
       type: "loadReviews",
       id: userId,
       isSetReviews: true
     });
+      this.toggleLoading()
     this.fullName = this.user.fullName;
     this.projs = await this.$store.dispatch({
       type: "loadProjs",
-      filterBy: { id: user._id }
+      filterBy: { id: userId }
     });
+
     },
     async save(review) {
       await this.$store.dispatch({
@@ -225,7 +233,7 @@ export default {
       });
     },
     toggleNotifications() {
-      if (!loggedinUser && !this.loggedinUser.notifications.length && !this.isNotificationsOpen)
+      if (!this.loggedinUser && !this.loggedinUser.notifications.length && !this.isNotificationsOpen)
         return;
       this.isNotificationsOpen = !this.isNotificationsOpen;
       document.body.classList.toggle("notifications-open");
@@ -258,6 +266,20 @@ export default {
     },
     scrollTo(ev) {
       window.scrollTo(0, ev.target.offsetTop - 200);
+    },
+    toggleLoading() {
+      this.isSaveLoading = !this.isSaveLoading;
+      document.body.classList.toggle("loading-active");
+    },
+    onInputName(){
+        if (this.timeOut) {
+          clearTimeout(this.timeOut);
+          this.timeOut = null;
+        }
+        this.timeOut = setTimeout(() => {
+          this.user.fullName = this.fullName;
+          this.updateUser();
+        }, 1000);
     }
   },
   computed: {
@@ -284,25 +306,25 @@ export default {
       }
     },
     user() {},
-    fullName: {
-      handler() {
-        if (
-          !this.loggedinUser ||
-          (this.loggedinUser && this.loggedinUser._id !== this.user._id )
-        ) {
-          return;
-        }
-        if (this.timeOut) {
-          clearTimeout(this.timeOut);
-          this.timeOut = null;
-        }
-        this.timeOut = setTimeout(() => {
-          this.user.fullName = this.fullName;
-          this.updateUser();
-        }, 3000);
-      },
-      deep: true
-    },
+    // fullName: {
+    //   handler() {
+    //     if (
+    //       !this.loggedinUser ||
+    //       (this.loggedinUser && this.loggedinUser._id !== this.user._id )
+    //     ) {
+    //       return;
+    //     }
+    //     if (this.timeOut) {
+    //       clearTimeout(this.timeOut);
+    //       this.timeOut = null;
+    //     }
+    //     this.timeOut = setTimeout(() => {
+    //       this.user.fullName = this.fullName;
+    //       this.updateUser();
+    //     }, 3000);
+    //   },
+    //   deep: true
+    // },
     "loggedinUser.notifications": {
       handler() {
         if (

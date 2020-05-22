@@ -10,17 +10,38 @@
         <section>
           <h4>{{proj.organization}}</h4>
           <h5>{{proj.title}}</h5>
-          <div class="world-details">
+          <div v-if="proj.position" class="world-details">
             <img
-              :src="`https://www.countryflags.io/${proj.position.short_country}/shiny/64.png`"
               v-if="proj.position.short_country"
+              :src="`https://www.countryflags.io/${proj.position.short_country}/shiny/64.png`"
             />
             <h5 v-if="proj.position.city">{{proj.position.city}},</h5>
             <h5 v-else>{{proj.position.region}},</h5>
             <h5>{{proj.position.country}}</h5>
           </div>
         </section>
-        <review-avarage-by-id class="review-avarage" :id="proj._id" />
+        <section  class="review-avarage">
+           <el-rate
+            class="el-rate-avarage"
+            v-if="proj.rate.average"
+            v-model="proj.rate.average"
+            disabled
+            show-score
+            text-color="#0b757d"
+            :score-template="`${proj.rate.average.toFixed(1)} (${proj.rate.length})`"
+            :colors="colors"
+          ></el-rate> 
+           <el-rate
+            class="el-rate-avarage"
+            v-else
+            disabled
+            show-score
+            text-color="#0b757d"
+            score-template="0 (0)"
+            :colors="colors"
+          ></el-rate> 
+        </section>
+        <!-- <review-avarage-by-id class="review-avarage" :id="proj._id" /> -->
       </div>
     </div>
   </transition>
@@ -33,6 +54,11 @@ export default {
   props: ["proj"],
   components: {
     reviewAvarageById
-  }
+  },
+  data() {
+    return {
+      colors: this.$store.getters.colors,
+    }
+  },
 };
 </script>

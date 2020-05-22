@@ -1,6 +1,9 @@
 <template>
   <transition name="fade">
     <div class="login-page height-container">
+       <div v-if="isSaveLoading" class="save-loading">
+        <img src="../assets/svg/rolling2.svg" alt />
+      </div>
       <form v-if="credentials && !isSignup" class="flex col" @submit.prevent="login">
         <h1>Log-in</h1>
         <input ref="username" class="my-form" type="text" v-model="credentials.username" placeholder="User Name" required  />
@@ -60,7 +63,8 @@ export default {
     return {
       credentials: null,
       isSignup: false,
-      isLoading: false
+      isLoading: false,
+      isSaveLoading: false
     };
   },
   async created() {
@@ -76,10 +80,14 @@ export default {
 
   methods: {
     async login() {
+      this.toggleLoading() 
+
       var user = await this.$store.dispatch({
         type: "login",
         credentials: this.credentials
       });
+      this.toggleLoading() 
+
       if (user !== "err") {
         this.$notify({
           title: "Success",
@@ -132,10 +140,14 @@ export default {
         this.$refs.password.focus();
         return;
       }
+      this.toggleLoading() 
+
       var user = await this.$store.dispatch({
         type: "signup",
         newUserCred: this.newUserCred
       });
+      this.toggleLoading() 
+
       this.goBack();
       eventBus.$emit("connectSockets");
     },
@@ -161,7 +173,11 @@ export default {
     },
     async removeUser(userId) {
       var msg = await this.$store.dispatch({ type: "removeUser", userId });
-    }
+    },
+     toggleLoading() {
+      this.isSaveLoading = !this.isSaveLoading;
+      document.body.classList.toggle("loading-active");
+    },
   },
   computed: {
     loggedinUser() {

@@ -332,7 +332,7 @@
         <review-add
           v-if="(loggedinUser && loggedinUser._id !== proj.createdBy._id) || !loggedinUser"
           :review="review"
-          @save="saveReview"
+          @saveReview="saveReview"
         />
 
         <!--CMP LIST OFF REVIEW-->
@@ -494,6 +494,8 @@ export default {
         isSetReviews: true
       });
       this.averageRate = this.reviews.reduce((a, b) => a + b.rate, 0);
+      console.log(this.reviews.length, 'length of revires');
+      
       this.review = this.getEmptyReview();
     } else {
       if (!this.loggedinUser) {
@@ -624,27 +626,30 @@ export default {
         type: "success",
         duration: 1500
       });
+      this.updateRateForProj()
+
       this.$router.push("/");
     },
     async saveReview(review) {
-      review.by = this.loggedinUser
-        ? this.loggedinUser
-        : {
-            _id: 1,
-            fullName: "Anonymous",
-            imgUrl: "../../assets/png/login.png"
-          };
-      var reviews = await this.$store.dispatch({
+      review.by = this.$store.getters.by
+      this.toggleLoading() 
+      const reviewSaved = await this.$store.dispatch({
         type: "saveReview",
         review
       });
+      if (reviewSaved) this.updateRateForProj()
+      this.toggleLoading() 
       this.review = this.getEmptyReview();
+    },
+    async updateRateForProj(){
+        const reviews = this.$store.getters.reviews
+        this.proj.rate = {average: reviews.reduce((a, b) => a + b.rate, 0) / reviews.length, length: reviews.length}
+        const projUpdated =  await this.$store.dispatch({type:'saveProj', proj: this.proj})
     },
     getEmptyReview() {
       return {
         txt: "",
         rate: 5,
-        by: this.$store.getters.by,
         about: {
           _id: this.proj._id,
           fullName: this.proj.title,

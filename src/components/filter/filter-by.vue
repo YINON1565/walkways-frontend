@@ -75,21 +75,19 @@ export default {
     };
   },
   async created() {
-    this.categories = projService.loadCategoties();
-    this.categories = this.categories.map(category => category.category);
-    // this.categories = this.categories.map(category => {return {name: category.title, value:category.category}});
+    this.categories = projService.loadCategoties().map(category => category.category);;
     this.tags = projService.loadTags();
-    const projs = this.$store.getters.projs;
-    if (!projs.length) {
-      await this.$store.dispatch({ type: "loadProjs" });
-    }
-    this.creators = await this.$store.getters.creators;
+    this.creators = await this.$store.dispatch({type:'loadUsers'}).map(user=> user.fullName);
+    // this.creators = await this.$store.getters.creators;
+    // const projs = this.$store.getters.projs;
+    // if (!projs.length) {
+    //   await this.$store.dispatch({ type: "loadProjs" });
+    // }
+
+    // TODO: fix this in proj.store
   },
   methods: {
     emitFilter() {
-      if (this.$route.path !== "/projs/aroundTheWorld") {
-        this.$router.push("/projs/aroundTheWorld");
-      }
       if (this.dates.length) {
         this.filterBy.startAt = this.toTimestamp(this.dates[0]);
         this.filterBy.endsAt = this.toTimestamp(this.dates[1]);

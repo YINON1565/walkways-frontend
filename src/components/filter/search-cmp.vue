@@ -42,13 +42,14 @@ import { eventBus } from "../../services/eventbus-service";
 export default {
   props: {
     value: {
-      type: String,
+      type: String
     },
     isFiltersOpen: Boolean
   },
   data() {
     return {
-      input: this.value
+      input: this.value,
+      timeoutForEmitInput: null
     };
   },
   mounted() {
@@ -63,13 +64,16 @@ export default {
   },
   methods: {
     goToSearchPage(txt) {
-        this.$refs.inputRef.focus();
-        window.scrollTo(0, 0);
-        this.input = txt;
-        this.search();
+      this.$refs.inputRef.focus();
+      window.scrollTo(0, 0);
+      this.input = txt;
+      this.search();
     },
     search() {
-      this.$emit("input", this.input);
+      clearTimeout(this.timeoutForEmitInput);
+      this.timeoutForEmitInput = setTimeout(() => {
+        this.$emit("input", this.input);
+      }, 500);
     }
   }
 };

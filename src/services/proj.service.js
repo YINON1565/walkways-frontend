@@ -4,6 +4,7 @@ import { userService } from './user.service.js';
 import httpService from './http.service.js'
 
 const KEY_FAVORS = 'projs'
+const KEY_PROJS_COUNT = 'projsCount'
 
 export const projService = {
     getEmptyProj,
@@ -13,11 +14,30 @@ export const projService = {
     remove,
     getHeaderObj,
     loadCategoties,
-    loadTags
+    loadTags,
+    getProjsCount,
+    changeProjsCount,
+}
+function changeProjsCount(diff) {
+   var projsCount = storageService.load(KEY_PROJS_COUNT)
+   if (projsCount) {
+       projsCount += diff
+       storageService.store(KEY_PROJS_COUNT, projsCount)
+   }
 }
 
+async function getProjsCount(){
+    var projsCount = storageService.load(KEY_PROJS_COUNT)
+    if (!projsCount) {   
+       const queryParams = new URLSearchParams();
+       queryParams.set('count', true)
+       projsCount = await httpService.get(`proj?${queryParams}`);
+       storageService.store(KEY_PROJS_COUNT, projsCount)
+   } 
+   return projsCount
+}
 
-function query(filterBy) {
+function query(filterBy, limit, skip) {
     const queryParams = new URLSearchParams();
     
     if (filterBy) {
@@ -26,8 +46,19 @@ function query(filterBy) {
                 queryParams.set(property, filterBy[property])
             }
         } 
+        if (limit) {
+            queryParams.set('limit', limit)
+            queryParams.set('skip', skip)
+        }
         return httpService.get(`proj?${queryParams}`);
     }
+    if (limit) {
+        console.log(limit, 'limit in service front');
+        queryParams.set('limit', limit)
+        return httpService.get(`proj?${queryParams}`);
+
+    }
+    
 
     return httpService.get('proj');
 }
@@ -73,7 +104,7 @@ function getEmptyProj() {
             otherSkills: [],
         },
         tags: [],
-        rate: 0
+        rate: {average: null, length: 0}
     }
 }
 

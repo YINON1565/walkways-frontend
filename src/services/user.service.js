@@ -1,19 +1,41 @@
-import httpService from './http.service.js';
-import mapService from './map.service.js'
-
 const KEY_LOGGEDIN = 'loggedinUser';
+const KEY_USERS_COUNT = 'usersCount'
 
-export const userService = {
-    login,
-    logout,
-    signup,
-    getUsers,
-    getById,
-    getEmptyUser,
-    remove,
-    update,
-    getLoggeinUser,
-    getMinimalUser,
+import mapService from './map.service.js';
+import httpService from './http.service.js'
+// import {utilService} from './util.service.js'
+import {storageService} from './storage.service.js'
+
+async function getUsersCount(){
+    var usersCount = storageService.load(KEY_USERS_COUNT)
+    if (!usersCount) {   
+       const queryParams = new URLSearchParams();
+       queryParams.set('count', true)
+       usersCount = await httpService.get(`user?${queryParams}`);
+       storageService.store(KEY_USERS_COUNT, usersCount)
+   } 
+   return usersCount
+}
+
+function changeUsersCount(diff) {
+    var usersCount = storageService.load(KEY_USERS_COUNT)
+    if (usersCount) {
+        usersCount += diff
+        storageService.store(KEY_USERS_COUNT, usersCount)
+    }
+ }
+
+function getBy() {
+    const user = getLoggeinUser()
+    return user ? {
+        _id: user._id,
+        fullName: user.fullName,
+        imgUrl: user.imgUrl
+    } 
+    : {
+        fullName: 'Anonymous',
+        imgUrl: '../../assets/svg/user-profile.svg'
+    }
 }
 
 async function getById(userId) {
@@ -95,4 +117,20 @@ function _getValidtime(time) {
 
 function _padNum(num) {
     return (num < 10) ? '0' + num : num;
+}
+
+export const userService = {
+    login,
+    logout,
+    signup,
+    getUsers,
+    getById,
+    getEmptyUser,
+    remove,
+    update,
+    getLoggeinUser,
+    getMinimalUser,
+    getBy,
+    getUsersCount,
+    changeUsersCount
 }
