@@ -13,7 +13,6 @@ export default {
             return state.reviews;
         },
         reviewsCount(state) {
-            console.log(state.reviewsCount, 'reviewsCount in getters');
             return state.reviewsCount;
         },
         by(state) {
@@ -28,8 +27,6 @@ export default {
             state.reviews = reviews;
         },
         setReviewsCount(state, { reviewsCount }){
-            
-            console.log(reviewsCount, 'reviewsCount in mutations');
             state.reviewsCount = reviewsCount;
         },
         setBy(state){
@@ -62,9 +59,6 @@ export default {
             const reviews = await reviewService.getReviews(id);
             if (isSetReviews){
                 context.commit({ type: 'setReviews', reviews })            
-            }
-            if (isSetReviews) {
-                console.log(id, reviews, 'id, reviews');
             }
             return reviews;
         },

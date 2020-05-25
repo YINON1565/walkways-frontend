@@ -22,10 +22,6 @@ export default {
       type: "loadReviews",
       id: this.id
     });
-    // const proj = await this.$store.dispatch({type: 'loadProj', projId: this.id})
-    // // if (proj.rate) proj.rate = await {average:  this.reviews.reduce((a,b) => a + b.rate, 0) / (this.reviews.length), length: this.reviews.length}
-    // console.log('rate:', proj.rate);
-    // // await this.$store.dispatch({type:'saveProj', proj})
   },
   components: {
     reviewAvarage

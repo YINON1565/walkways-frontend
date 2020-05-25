@@ -24,7 +24,6 @@ export default {
     };
   },
   async created() {
-    console.log("app created!");
     socketService.setup();
     this.connectSockets();
     this.audioNotification = new Audio(
@@ -59,13 +58,11 @@ export default {
     connectSockets() {
       this.user = JSON.parse(JSON.stringify(this.$store.getters.loggedinUser));
       if (!this.user) return;
-      console.log("conect socket!");
       socketService.on(`updatedUser ${this.user._id}`, this.updateUser);
     },
     disconnectSockets() {
       this.user = JSON.parse(JSON.stringify(this.$store.getters.loggedinUser));
       if (!this.user) return;
-      console.log("disconect socket!");
       socketService.off(`updatedUser ${this.user._id}`, this.updateUser);
     },
     async removeReview(reviewId){

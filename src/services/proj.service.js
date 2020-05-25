@@ -39,7 +39,6 @@ async function getProjsCount(){
 
 function query(filterBy, limit, skip) {
     const queryParams = new URLSearchParams();
-    
     if (filterBy) {
         for (const property in filterBy) {
             if (filterBy[property]){
@@ -53,10 +52,8 @@ function query(filterBy, limit, skip) {
         return httpService.get(`proj?${queryParams}`);
     }
     if (limit) {
-        console.log(limit, 'limit in service front');
         queryParams.set('limit', limit)
         return httpService.get(`proj?${queryParams}`);
-
     }
     
 

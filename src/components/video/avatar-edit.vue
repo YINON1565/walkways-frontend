@@ -3,31 +3,41 @@
     <transition name="fade">
       <myVideo v-if="playVideo" @stopVideo="toggleVideo"></myVideo>
     </transition>
+    <!-- Todo hendle container-img -->
     <section
-      @click.stop="openSelect = !openSelect"
+      @click.stop="onClickUserProfile"
       :class="{'open-select':openSelect}"
-      class="container-img container-img-profile pointer flex j-center"
+      class="container-img-profile pointer flex j-center"
     >
       <!-- <pre>{{url}}</pre> -->
-      <img v-if="url" class="avatar avatar-m" :src="url" title="Replace profile picture" />
+      <img
+        v-if="url"
+        :src="url"
+        @error="OnError"
+        @load="isLoad = true"
+        :class="{isLoad}"
+        class="avatar"
+        title="Replace profile picture"
+      />
       <img
         v-else-if="isLoading"
-        class="avatar avatar-m"
+        class="avatar isLoad"
         src="../../assets/svg/rolling.svg"
         title="Replace profile picture"
       />
       <img
         v-else
-        class="avatar avatar-m"
+        @load="isLoad = true"
+        :class="{isLoad}"
+        class="avatar"
         src="../../assets/svg/user-profile.svg"
         title="Set profile picture"
       />
+      <img v-if="!isLoad" src="../../assets/svg/ripple.svg" class="avatar ripple-img" />
+      <input ref="uploadImg" @change="uploadImg" type="file" hidden />
       <transition name="fade">
         <section class="select" @click="openSelect = !openSelect" v-if="openSelect">
-          <label>
-            <input @change="uploadImg" type="file" hidden />
-            <li class="upload">Upload a photo</li>
-          </label>
+          <li @click="$refs.uploadImg.click()" class="upload">Upload a photo</li>
           <li @click="toggleVideo">Turn on camera</li>
         </section>
       </transition>
@@ -47,7 +57,8 @@ export default {
   data() {
     return {
       playVideo: false,
-      openSelect: false
+      openSelect: false,
+      isLoad: false
     };
   },
   created() {},
@@ -64,6 +75,13 @@ export default {
     document.removeEventListener("keydown", this.handlePress);
   },
   methods: {
+    onClickUserProfile() {
+      if (window.innerHeight > window.innerWidth) {
+        this.$refs.uploadImg.click();
+      } else {
+        this.openSelect = !this.openSelect;
+      }
+    },
     handleClick(event) {
       if (this.openSelect) this.openSelect = false;
     },
@@ -78,6 +96,9 @@ export default {
     toggleVideo() {
       this.playVideo = !this.playVideo;
       document.body.classList.toggle("vidoe-open");
+    },
+    OnError(ev) {
+      ev.target.src = require("../../assets/svg/user-profile.svg");
     }
   },
   components: {

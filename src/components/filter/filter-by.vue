@@ -75,16 +75,15 @@ export default {
     };
   },
   async created() {
-    this.categories = projService.loadCategoties().map(category => category.category);;
+    this.categories = projService
+      .loadCategoties()
+      .map(category => category.category);
     this.tags = projService.loadTags();
-    this.creators = await this.$store.dispatch({type:'loadUsers'}).map(user=> user.fullName);
-    // this.creators = await this.$store.getters.creators;
-    // const projs = this.$store.getters.projs;
-    // if (!projs.length) {
-    //   await this.$store.dispatch({ type: "loadProjs" });
-    // }
-
-    // TODO: fix this in proj.store
+    const projs = this.$store.getters.projs
+    if (!projs.length) {
+      this.projs = await this.$store.dispatch({ type: "loadProjs" });
+    }
+    this.creators = await this.$store.getters.creators;
   },
   methods: {
     emitFilter() {

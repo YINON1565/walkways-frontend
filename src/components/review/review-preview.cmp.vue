@@ -3,8 +3,25 @@
     <form @submit.prevent="updateReview">
       <div class="flex col bet">
         <h3 class="review-by flex a-center">
-          <img v-if="review.by.fullName === 'Anonymous'" class="avatar not-allowed" src="../../assets/svg/user-profile.svg" alt title=""/>
-          <img v-else @click="$router.push(`/user/${review.by._id}`)" class="avatar pointer" :src="review.by.imgUrl" alt />
+          <img
+            v-if="review.by.fullName === 'Anonymous' || isError"
+            class="avatar not-allowed"
+            src="../../assets/svg/user-profile.svg"
+            alt
+            title
+            @load="isLoad = true"
+            :class="{isLoad}"
+          />
+          <img
+            v-else
+            @click="$router.push(`/user/${review.by._id}`)"
+            class="avatar pointer"
+            :src="review.by.imgUrl"
+            @load="isLoad = true"
+            @error="isError = true"
+            :class="{isLoad}"
+          />
+          <img v-if="!isLoad" src="../../assets/svg/ripple.svg" class="avatar ripple-img" />
           {{reviewForUpdate.by.fullName}}
         </h3>
         <div class="flex a-center bet">
@@ -79,6 +96,8 @@ export default {
     return {
       reviewForUpdate: null,
       isEdit: false,
+      isError: false,
+      isLoad: false,
       colors: this.$store.getters.colors
     };
   },

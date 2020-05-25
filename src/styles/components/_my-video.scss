@@ -1,31 +1,31 @@
 .my-video {
     
     position: fixed;
-    bottom: 0;
-    left: 0;
-    @include for-medium-mobile-layout {
-        bottom: initial;
+    // bottom: 0;
+    // left: 0;
+    // @include for-medium-mobile-layout {
+    //     bottom: initial;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-    }
+    // }
     border-radius: 3px;
     box-shadow: $shadow3;
     z-index: 10;
     header {
         padding: 0 30px;
-        height: 100px;
-        background-color: #3e3c4d;
-        img:first-child {
-            width: 25px;
-        }
-        @include for-medium-mobile-layout {
+        // height: 100px;
+        // background-color: #3e3c4d;
+        // img:first-child {
+        //     width: 25px;
+        // }
+        // @include for-medium-mobile-layout {
             img:first-child {
                 width: auto;
             }
             height: 60px;
             background-color: #4f4b64;
-        }
+        // }
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;
         img {
@@ -37,12 +37,12 @@
        
     }
     .container-canvas-video {
-        width: 100vw;
-        height: calc(100vh - 180px);
-        @include for-medium-mobile-layout {
+        // width: 100vw;
+        // height: calc(100vh - 180px);
+        // @include for-medium-mobile-layout {
             width: 400px;
             height: 300px;
-        }
+        // }
         padding: 0 1px;
         background-color: #4f4b64;
     }
@@ -54,12 +54,12 @@
     }
     video {
         transform: rotateY(180deg);
-        width: 100vw;
-        height: calc(100vh - 180px);
-        @include for-medium-mobile-layout {
+        // width: 100vw;
+        // height: calc(100vh - 180px);
+        // @include for-medium-mobile-layout {
             width: 400px;
             height: 300px;
-        }
+        // }
         &.loading {
             background-image: url('~@/assets/svg/loading2.svg');
             background-position: center center;
@@ -70,12 +70,12 @@
         }
     }
     .profile-img {
-        width: 100vw;
-        height: calc(100vh - 180px);
-        @include for-medium-mobile-layout {
+        // width: 100vw;
+        // height: calc(100vh - 180px);
+        // @include for-medium-mobile-layout {
             width: 400px;
             height: 300px;
-        }
+        // }
     }
     canvas {
         display: none;

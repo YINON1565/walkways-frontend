@@ -54,7 +54,6 @@ export default {
         async loadUsersCount(context) {
             const usersCount = await userService.getUsersCount();
             context.commit({ type: 'setUsersCount' , usersCount })            
-            console.log(usersCount, 'usersCount');
             return usersCount;
         },
         async login(context, { credentials }) {
@@ -80,9 +79,7 @@ export default {
             return res
         },
         async loadUsers(context) {
-            // console.log('users in store');
             const users = await userService.getUsers();
-            
             context.commit({ type: 'setUsers', users })
             return users;
         },

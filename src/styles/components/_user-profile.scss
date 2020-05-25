@@ -4,6 +4,16 @@
     margin-top: 25px;
     margin-bottom: 25px;
     .container-img {
+        img {
+            display: none;
+            &.isLoad {
+                display: block;
+            }
+            &.ripple-img {
+                display: block;
+                background-color: initial;
+            }
+        }
         @include for-medium-mobile-layout{
             margin-inline-end: 2ch;
         }
@@ -21,7 +31,19 @@
             @include for-medium-mobile-layout{
                 margin: 0 3ch 80px 0;
             }
+            img {
+                display: none;
+                &.isLoad {
+                    display: block;
+                }
+                &.ripple-img {
+                    background-color: initial;
+                    display: block;
+                }
+            }
             .select {
+                font-family: Montserrat;
+
                 li {
                     width: 200px;
                 }

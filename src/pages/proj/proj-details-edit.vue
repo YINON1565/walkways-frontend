@@ -22,7 +22,21 @@
           <div v-else-if="proj.imgUrls.length" class="img-proj-container ratio-16-9">
             <el-carousel indicator-position="outside">
               <el-carousel-item v-for="(imgUrl, index) in proj.imgUrls" :key="index">
-                <img @click="setCurrImg(index)" :src="imgUrl" />
+                <!-- <img :src="imgUrl" /> -->
+                <img
+                  src="../../assets/png/fully-booked.png"
+                  v-if="proj.membersApplyed.length === proj.membersNeeded && isImgProjLoad"
+                  class="fully-booked"
+                />
+                <img
+                  :src="imgUrl"
+                  :class="{isImgProjLoad, isImgProjError}"
+                  @error="OnErrorImgProj"
+                  @load="isImgProjLoad = true"
+                />
+                <div class="flex a-center j-center">
+                  <img v-if="!isImgProjLoad" src="../../assets/svg/ripple.svg" class="ripple-img" />
+                </div>
                 <div v-if="editMode" class="edit-img-container-btn">
                   <div title="Delete this image from project">
                     <img @click="removeImg(index)" src="../../assets/svg/bin.svg" alt />
@@ -194,7 +208,7 @@
                   <!--MEMBERS NEEDED REQUIEMENTS-->
                   <p>
                     <span class="strong">Members needed:</span>
-                    {{proj.membersNeeded}} / {{proj.membersNeeded + proj.membersApplyed.length}}
+                    {{proj.membersApplyed.length}} / {{proj.membersNeeded}}
                   </p>
 
                   <!--LANGUAGES REQUIEMENTS-->
@@ -284,10 +298,18 @@
                 <section v-if="active === 'createdBy'" class="details-created-by flex col">
                   <router-link :to="'/user/' + proj.createdBy._id">
                     <img
-                      class="avatar avatar-m"
+                      class="avatar"
+                      :class="{isImgProfileLoad}"
+                      @load="isImgProfileLoad = true"
+                      @error="OnErrorImgProfile"
                       :src="proj.createdBy.imgUrl"
                       :alt="proj.createdBy.fullName"
                       :title="proj.createdBy.fullName"
+                    />
+                    <img
+                      class="avatar ripple-img"
+                      v-if="!isImgProfileLoad"
+                      src="../../assets/svg/ripple.svg"
                     />
                   </router-link>
                   <section>
@@ -430,8 +452,9 @@
         :class="{'apply-open':isApplyOpen}"
       ></proj-apply>
     </div>
-    <div class="height-container width-contianer flex a-center j-center" v-else>
-      <img class="loading-page" src="../../assets/svg/loading.svg" alt />
+    <div class="height-container" v-else>
+      <!-- <div class="height-container width-contianer flex a-center j-center" v-else> -->
+      <!-- <img class="loading-page" src="../../assets/svg/loading.svg" alt /> -->
     </div>
   </transition>
 </template>
@@ -473,10 +496,14 @@ export default {
       ],
       categories: null,
       isLoading: false,
-      isSaveLoading: false
+      isSaveLoading: false,
+      isImgProfileLoad: false,
+      isImgProjLoad: false,
+      isImgProjError: false
     };
   },
   async created() {
+    this.toggleLoading();
     const categories = projService.loadCategoties();
     this.categories = categories.map(category => {
       return { value: category.category, label: category.title };
@@ -494,8 +521,6 @@ export default {
         isSetReviews: true
       });
       this.averageRate = this.reviews.reduce((a, b) => a + b.rate, 0);
-      console.log(this.reviews.length, 'length of revires');
-      
       this.review = this.getEmptyReview();
     } else {
       if (!this.loggedinUser) {
@@ -511,6 +536,7 @@ export default {
       this.editMode = true;
       this.newProjMode = true;
     }
+    this.toggleLoading();
   },
   components: {
     mapPreview,
@@ -569,9 +595,6 @@ export default {
     removeImg(index) {
       this.proj.imgUrls.splice(index, 1);
     },
-    async setCurrImg(idx) {
-      // this.currentImgIdx = idx;
-    },
     async saveProj(proj) {
       if (!proj.category) {
         this.$notify({
@@ -587,10 +610,10 @@ export default {
       proj.endsAt = this.toTimestamp(proj.date[1]);
       proj.date = this.fixDate(proj.date);
       proj.createdBy = this.loggedinUser;
-      if(!proj.imgUrls.length) proj.imgUrls[0] = 'https://res.cloudinary.com/tamir/image/upload/v1589967682/noImg_imojcv.jpg'
-      console.log(proj);
-      
-      this.toggleLoading()      
+      if (!proj.imgUrls.length)
+        proj.imgUrls[0] =
+          "https://res.cloudinary.com/tamir/image/upload/v1589967682/noImg_imojcv.jpg";
+      this.toggleLoading();
       var res = await this.$store.dispatch({ type: "saveProj", proj });
       this.$notify({
         title: "Success",
@@ -626,25 +649,31 @@ export default {
         type: "success",
         duration: 1500
       });
-      this.updateRateForProj()
+      this.updateRateForProj();
 
       this.$router.push("/");
     },
     async saveReview(review) {
-      review.by = this.$store.getters.by
-      this.toggleLoading() 
+      review.by = this.$store.getters.by;
+      this.toggleLoading();
       const reviewSaved = await this.$store.dispatch({
         type: "saveReview",
         review
       });
-      if (reviewSaved) this.updateRateForProj()
-      this.toggleLoading() 
+      if (reviewSaved) this.updateRateForProj();
+      this.toggleLoading();
       this.review = this.getEmptyReview();
     },
-    async updateRateForProj(){
-        const reviews = this.$store.getters.reviews
-        this.proj.rate = {average: reviews.reduce((a, b) => a + b.rate, 0) / reviews.length, length: reviews.length}
-        const projUpdated =  await this.$store.dispatch({type:'saveProj', proj: this.proj})
+    async updateRateForProj() {
+      const reviews = this.$store.getters.reviews;
+      this.proj.rate = {
+        average: reviews.reduce((a, b) => a + b.rate, 0) / reviews.length,
+        length: reviews.length
+      };
+      const projUpdated = await this.$store.dispatch({
+        type: "saveProj",
+        proj: this.proj
+      });
     },
     getEmptyReview() {
       return {
@@ -685,6 +714,13 @@ export default {
     reset() {
       this.proj = projService.getEmptyProj();
       window.scrollTo(0, 0);
+    },
+    OnErrorImgProfile(ev) {
+      ev.target.src = require("../../assets/svg/user-profile.svg");
+    },
+    OnErrorImgProj(ev) {
+      ev.target.src = require("../../assets/svg/broken.svg");
+      this.isImgProjError = true
     }
   },
   mounted() {

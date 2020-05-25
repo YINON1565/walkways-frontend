@@ -1,13 +1,19 @@
 <template>
-<router-link :to="'/proj/' + proj._id"  class="proj-container">
-  <img class="proj-minimal-img" :src="proj.imgUrls[0]" alt="">
-  <img class="proj-flag" :src="`https://www.countryflags.io/${proj.position.short_country}/shiny/64.png`" alt="">
-</router-link>
+  <router-link :to="'/proj/' + proj._id" class="proj-container">
+    <!-- <img class="proj-minimal-img" :class="{isLoad}" :src="proj.imgUrls[0]" alt @load="load" /> -->
+    <img class="proj-minimal-img" :class="{isLoad}" :src="proj.imgUrls[0]" alt="" @load="isLoad = true">
+    <img class="proj-minimal-img isLoad" v-if="!isLoad" src="../../assets/svg/ripple.svg"  />
+
+    <img
+      class="proj-flag"
+      :src="`https://www.countryflags.io/${proj.position.short_country}/shiny/64.png`"
+      alt
+    />
+  </router-link>
 </template>
 <script>
-
 export default {
-    props: ["proj"],
+  props: ["proj"],
 
   data() {
     return {
@@ -17,11 +23,16 @@ export default {
       review: null,
       projApplied: null,
       audioNotification: null,
-      projs:null
+      projs: null,
+      isLoad: false
     };
   },
-  async created() {}
-    
-    
+  methods: {
+    load(){
+      setTimeout(()=> {
+        this.isLoad = true
+      },1000)
+    }
+  }
 };
 </script>

@@ -31,10 +31,6 @@ export default {
       window.scrollTo(0, ev.target.offsetTop - 200);
     }
   },
-  created(){
-    console.log(this.reviews);
-    
-  }
 };
 </script>
 

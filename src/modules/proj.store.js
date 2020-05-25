@@ -72,7 +72,6 @@ export default {
         async loadProjsCount(context) {
             const projsCount = await projService.getProjsCount();
             context.commit({ type: 'setProjsCount' , projsCount })            
-            console.log(projsCount, 'projsCount');
             return projsCount;
         },
         async loadProjs(context, { filterBy, limit, skip }) {
@@ -83,6 +82,7 @@ export default {
             else if (limit || filterBy) {
                 context.commit({ type: 'setCurrProjs', projs })            
             }
+            else context.commit({ type: 'setProjs', projs })
             return projs
         },
 

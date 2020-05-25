@@ -12,6 +12,12 @@
             border-top-right-radius: 3px;
             object-fit: cover;
             height: 12rem;
+            &.proj-img {
+                display: none;
+                &.isLoad {
+                    display: block;
+                }
+            }
         }
 
         .fully-booked{

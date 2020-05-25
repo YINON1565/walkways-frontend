@@ -54,7 +54,6 @@
                 }
             }
             .img-proj-container {
-                position: relative;
                 .el-carousel--horizontal{
                     overflow: hidden;
                 }
@@ -63,10 +62,34 @@
                     height: 93%;
                     border-radius: 5px;
                 }
+                position: relative;
+                .fully-booked{
+                    top:-28%;
+                    left:6%;
+                    width:84%;
+                    position: absolute;
+                    z-index: 1;
+                    transform: rotate(10deg);
+                    display: block;
+                }
                 img {
                     border-radius: 5px;
                     width: 100%;
+                    display: none;
+                    &.isImgProjLoad {
+                        display: block;
+                    }
+                    &.isImgProjError {
+                        height: inherit;
+                        object-fit: cover;
+                    }
                 }
+
+                .ripple-img {
+                    display: block;
+                    width: 50%;
+                }
+
                 .el-carousel__arrow {
                     background-color: #ffffffa3;
                     color: #000;
@@ -173,7 +196,16 @@
                     }
                 }
                 .details-created-by {
-
+                    img:first-child {
+                        display: none;
+                        &.isImgProfileLoad {
+                            display: block;
+    
+                        }
+                    }
+                    .ripple-img{
+                        background-color: initial;
+                    }
                     p {
                         font-size: 16px;
                         padding-inline-start: 6px;

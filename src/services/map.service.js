@@ -12,9 +12,6 @@ import axios from "axios";
 
 async function searchPosition(txt){    
     const res= await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${txt.split(" ").join('+')}&key=${GAPI_KEY}&language=en&region=US`)
-    console.log(res);
-    
-             
     try { 
         var position=res.data.results[0].geometry.location ;
         const address_components_Length =res.data.results[0].address_components.length;   

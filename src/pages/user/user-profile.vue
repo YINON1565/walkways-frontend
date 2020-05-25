@@ -1,5 +1,6 @@
 <template>
   <transition name="fade">
+    <!-- <div class="user-profile width-container height-container"> -->
     <div class="user-profile width-container height-container" v-if="user">
       <div v-if="isSaveLoading" class="save-loading">
         <img src="../../assets/svg/rolling2.svg" alt />
@@ -10,14 +11,13 @@
             <!-- CMP AVATAR OF USER ---- EDIT-MODE-->
             <avatar-edit
               v-if="loggedinUser && (loggedinUser._id === user._id)"
-              :url="user.imgUrl"
+              :url="loggedinUser.imgUrl"
               :isLoading="isLoading"
             />
             <!-- V-ELSE: IMG AVATAR OF USER --- SHOW-MODE-->
-            <div v-else class="container-img">
-              <!-- <img class="avatar avatar-m" src="" @error="replaceByDefault" /> -->
-              <!-- <img class="avatar avatar-m" src=""  @beforeunload="replaceByLoading" /> -->
-              <img class="avatar avatar-m" :src="user.imgUrl" @error="replaceByDefault" />
+            <div v-else class="container-img" >
+              <img class="avatar" :class="{isLoad}" :src="user.imgUrl" @load="isLoad = true" @error="onErrorImgProfile"/>
+              <img class="avatar ripple-img" v-if="!isLoad" src="../../assets/svg/ripple.svg"  />
             </div>
 
             <div class="container-details-user flex col">
@@ -34,7 +34,7 @@
               <p v-else>{{user.fullName}}</p>
 
               <!-- JOIN-AT -->
-              <p>Join At: {{user.joinAt.date}}, {{user.joinAt.time}}</p>
+              <p >Join At: {{user.joinAt.date}}, {{user.joinAt.time}}</p>
 
               <!--CMP AVARAGE REVIEW OF USER-->
               <review-avarage v-if="reviews" :reviews="reviews" />
@@ -105,12 +105,12 @@
           <!-- <img class="edit-mode" v-if="editMode" src="../../assets/svg/pen2.svg" alt="Edit" /> -->
         </h3>
       </div>
-      <map-preview class="map" :array="[user]"></map-preview>
+      <map-preview class="map" v-if="user" :array="[user]"></map-preview>
     </div>
 
     <!--PAGE LOADING-->
-    <div class="height-container width-contianer flex a-center j-center" v-else>
-      <img class="loading-page" src="../../assets/svg/loading.svg" alt />
+    <div class="height-container" v-else>
+      <!-- <img class="loading-page" src="../../assets/svg/loading.svg" alt /> -->
     </div>
   </transition>
 </template>
@@ -138,7 +138,8 @@ export default {
       projs: null,
       isLoading: false,
       isNotificationsOpen: false,
-      isSaveLoading: false
+      isSaveLoading: false,
+      isLoad: false
     };
   },
   async created() {
@@ -170,8 +171,6 @@ export default {
     window.scrollTo(0, 0);
         this.toggleLoading()
     const userId = this.$route.params.id;
-    console.log(userId, 'userId');
-    
     const user = await userService.getById(userId);
     this.user = JSON.parse(JSON.stringify(user));
     this.imgUrl = this.user.imgUrl;
@@ -249,11 +248,9 @@ export default {
       this.user.imgUrl = imgUrl;
       await this.updateUser();
     },
-    replaceByDefault(ev){
+    onErrorImgProfile(ev){
+      this.isLoad = true
       ev.target.src = require("../../assets/svg/user-profile.svg")
-    },
-    replaceByLoading(ev){
-      ev.target.src = require("../../assets/svg/loading2.svg")
     },
     handleClick(event) {
       if (!this.isNotificationsOpen) return;
@@ -280,7 +277,7 @@ export default {
           this.user.fullName = this.fullName;
           this.updateUser();
         }, 1000);
-    }
+    },
   },
   computed: {
     loggedinUser() {

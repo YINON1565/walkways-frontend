@@ -1,45 +1,45 @@
 
 .proj-list {
     
-    // .header{
-    //     margin: 10px 0 10px 0;
-    //     color:  #fff8e2;
-    //     .page-header{
-    //         display: flex;
-    //         flex-direction: column;
-    //         justify-content: center;
-    //         align-items: center;
-    //         background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 0%, rgba(64, 64, 64, 1) 100%);
-    //     }
-    //     h2{
-    //         text-align: center;
-    //         font-size: rem(25px);
-    //         margin-bottom: 5px ;
-    //     }    
-    //     h3{
-    //         margin-top: 5px ;
-    //         text-align: center;
-    //         font-size: rem(15px);
-    //     }
-    //     @include for-mobile-layout {
-    //         h2{
-    //             font-size: rem(60px);
-    //         } 
-    //         h3{
-    //             font-size: rem(36px);
-    //         }
-    //     }
-    //     @include for-normal-layout {
-    //         h2{
-    //             font-size: rem(80px);
-    //         } 
-    //         h3{
-    //             font-size: rem(48px);
-    //         }
+    .header{
+        margin: 10px 0 10px 0;
+        color:  #fff8e2;
+        .page-header{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 0%, rgba(64, 64, 64, 1) 100%);
+        }
+        h2{
+            text-align: center;
+            font-size: rem(25px);
+            margin-bottom: 5px ;
+        }    
+        h3{
+            margin-top: 5px ;
+            text-align: center;
+            font-size: rem(15px);
+        }
+        @include for-mobile-layout {
+            h2{
+                font-size: rem(60px);
+            } 
+            h3{
+                font-size: rem(36px);
+            }
+        }
+        @include for-normal-layout {
+            h2{
+                font-size: rem(80px);
+            } 
+            h3{
+                font-size: rem(48px);
+            }
             
-    //     }    
+        }    
 
-    // }
+    }
     .around-the-world-list {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));

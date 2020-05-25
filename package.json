@@ -19,6 +19,7 @@
         "core-js": "^3.6.4",
         "element-ui": "^2.13.0",
         "eventbus": "0.0.3",
+        "gsap": "^3.2.6",
         "load-google-maps-api": "^2.0.2",
         "luxon": "^1.22.0",
         "register-service-worker": "^1.6.2",

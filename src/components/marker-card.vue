@@ -3,7 +3,21 @@
     <div v-if="proj">
       <el-carousel class="ratio-16-9">
         <el-carousel-item v-for="url in proj.imgUrls" :key="url">
-          <img :src="url" class="proj-img" />
+         <img src="../assets/png/fully-booked.png" v-if="proj.membersApplyed.length === proj.membersNeeded" class = "fully-booked"/>
+
+          <img
+            v-if="!isError"
+            :src="url"
+            class="proj-img"
+            :class="{isLoad}"
+            @load="isLoad = true"
+            @error="isError = true"
+          />
+          <div class="proj-img flex a-center j-center">
+            <img v-if="isError" src="../assets/svg/broken.svg" alt :class="{isError}" />
+            <img v-if="!isLoad && !isError" src="../assets/svg/ripple.svg" class="ripple-img" :class="{isLoad}" />
+          </div>
+      
         </el-carousel-item>
       </el-carousel>
       <div class="proj-content">
@@ -20,8 +34,8 @@
             <h5>{{proj.position.country}}</h5>
           </div>
         </section>
-        <section  class="review-avarage">
-           <el-rate
+        <section class="review-avarage">
+          <el-rate
             class="el-rate-avarage"
             v-if="proj.rate.average"
             v-model="proj.rate.average"
@@ -30,8 +44,8 @@
             text-color="#0b757d"
             :score-template="`${proj.rate.average.toFixed(1)} (${proj.rate.length})`"
             :colors="colors"
-          ></el-rate> 
-           <el-rate
+          ></el-rate>
+          <el-rate
             class="el-rate-avarage"
             v-else
             disabled
@@ -39,7 +53,7 @@
             text-color="#0b757d"
             score-template="0 (0)"
             :colors="colors"
-          ></el-rate> 
+          ></el-rate>
         </section>
         <!-- <review-avarage-by-id class="review-avarage" :id="proj._id" /> -->
       </div>
@@ -58,7 +72,9 @@ export default {
   data() {
     return {
       colors: this.$store.getters.colors,
-    }
-  },
+      isLoad: false,
+      isError: false
+    };
+  }
 };
 </script>

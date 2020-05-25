@@ -3,16 +3,17 @@
     <div class="proj-list width-container height-container">
       <!-- <div class="proj-list width-container height-container" v-if="projs"> -->
       <filter-By class="filter-in-proj-list" />
-      <!-- 
+      
       <transition name="fade">
-        <div class="header ratio-16-9" v-if="isOpen">
+        <div class="header ratio-16-9" v-if="!currProjs.length">
           <img src="../../assets/jpg/people.jpg" />
           <div class="page-header">
+            <h1></h1>
             <h2 class="projs-title">Be the change</h2>
             <h3>Be a global volunteer abroad</h3>
           </div>
         </div>
-      </transition>-->
+      </transition>
 
       <div class="around-the-world-list">
         <marker-card
@@ -23,15 +24,6 @@
           class="proj-preview-card"
           @click.native="openDetails(proj._id)"
         />
-        <span v-if="currProjs">{{currProjs.length}}</span>
-        <!-- <marker-card
-            v-for="proj in projs"
-            :key="proj._id"
-            :proj="proj"
-            :title="proj.description.substring(0,80) +'... Click to read more!!'"
-            class="proj-preview-card"
-            @click.native="openDetails(proj._id)"
-        />-->
       </div>
     </div>
   </transition>
@@ -59,34 +51,21 @@ export default {
     currProjs() {
       return this.$store.getters.currProjs;
     }
-    // projs: {
-    //   get() {
-    //     return this.$store.getters.currProjs;
-    //   },
-    //   set(val) {
-    //     this.$store.getters.currProjs;
-    //   }
-    // }
   },
   created() {
     window.scrollTo(0, 0);
     this.setUnitScrollY();
-
-    // if (!this.projs.length) {
-    // await this.$store.dispatch({ type: "loadProjs" });
-    // }
-    // this.initialVal = this.projs.length;
   },
   mounted() {
+    this.timeOutSetFilter = setTimeout(() => {
+      this.setFilter();
+    }, 100);
     eventBus.$on("setFilter", filterBy => this.setFilter(filterBy));
     window.addEventListener("scroll", this.handleScroll);
-      this.timeOutSetFilter = setTimeout(() => {
-        this.setFilter();
-      }, 1500);
 
-    // this.initialVal !== this.projs.length
-    //   ? (this.isOpen = false)
-    //   : this.toggleHero();
+    this.initialVal !== this.currProjs.length
+      ? (this.isOpen = false)
+      : this.toggleHero();
   },
   beforeDestroy() {
     eventBus.$off("setFilter", filterBy => this.setFilter(filterBy));
@@ -101,7 +80,6 @@ export default {
       } else if (window.innerWidth > 485) {
         this.unitScrollY = 700;
       } else this.unitScrollY = 1250;
-      console.log(window.innerWidth, "window.innerWidth");
     },
     handleScroll() {
       if (!this.limit) return;
@@ -116,7 +94,6 @@ export default {
       this.isOpen = true;
     },
     async setFilter(filterBy = {}) {
-      console.log("setfilter");
       clearTimeout(this.timeOutSetFilter)
       // TODO:this ↓↓ is a plaster. fix is in a query() in projService of the backend
       filterBy.x = [];

@@ -35,17 +35,6 @@ export default {
   },
   methods: {
     save() {
-      // if (!this.review.txt) {
-      //   this.$notify({
-      //     title: "Warning",
-      //     message: "Don't want to add a few words?",
-      //     type: "warning",
-      //     duration: 2500
-      //   });
-      //   return;
-      // }
-      console.log(' hi in revire add');
-      
       this.$emit("saveReview", this.review);
     },
     scrollTo(ev) {

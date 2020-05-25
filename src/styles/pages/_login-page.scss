@@ -1,6 +1,6 @@
 .login-page {
     overflow: hidden;
-
+    margin-bottom: 0;
     background-image: url("https://www.thebalancesmb.com/thmb/zLMhuQKCL24jIckZmKqw6E4n2hI=/2121x1414/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-585859259-57997e215f9b589aa94c4243.jpg");
     background-size: cover;
     padding: 0;
@@ -107,9 +107,18 @@
         background-color: #626262;
         width: rem(150px);
         height: rem(150px);
+        margin-bottom: 16px;
     }
     img {
         transition: opacity .3s;
+        display: none;
+        &.isLoad {
+            display: block;
+        }
+        &.ripple-img {
+            background-color: initial;
+            display: block;
+        }
         &:hover {
             opacity: 0.5;
         }
@@ -128,6 +137,7 @@
 
         }
     }
+   
     position: relative;
     .select {
         background-color: #fff;

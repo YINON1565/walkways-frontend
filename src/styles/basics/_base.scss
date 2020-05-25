@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
     outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 *::selection {
@@ -171,6 +172,23 @@ select {
     cursor: pointer;
     height: 100%;
 
+    .fully-booked{
+        top:-9%;
+        left:7%;
+        width:80%;
+        position: absolute;
+        z-index: 1;
+        transform: rotate(10deg);
+
+    }
+
+    .isError {
+        width: 100%;
+        height: fit-content;
+        object-fit: cover;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
 
     .proj-img {
         border-top-left-radius: 5px;

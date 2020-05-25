@@ -1,10 +1,18 @@
 .review-preview {
     position: relative;
     form {
-        .avatar {
-            width: 50px;
-            height: 50px;
-            margin-inline-end: 1.2ch;
+        .review-by {
+
+            .avatar {
+                width: 50px;
+                height: 50px;
+                margin-inline-end: 1.2ch;
+                display: none;  
+                &.isLoad, &.ripple-img {
+                  display: block;  
+                  background-color: initial;
+                }
+            }
         }
         div:first-child{
             // margin-bottom: 10px;

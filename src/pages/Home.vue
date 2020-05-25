@@ -14,7 +14,7 @@
           <span class="gandy">Mahatma Gandhi</span>
         </p>
       </div>
-      <!-- <div class="category-container width-container">
+      <div class="category-container width-container">
         <router-link
           :to="'/projs/' + category.category"
           v-for="category in categories"
@@ -25,7 +25,28 @@
           <img :src="category.imgUrl" />
           <div class="img-tag" :class="category.category">{{category.title}}</div>
         </router-link>
-      </div>-->
+      </div>
+      <!-- <section class="divider-container width-container">
+        <h1 class="details-header">Our community Activity</h1>
+        <div class="walk-ways-details">
+          <h1 class="divider">
+            <img src="../assets/svg/technology.svg" />Projects
+            <span class="space">{{projsCount}}</span>
+          </h1>
+          <h1 class="divider">
+            <img src="../assets/svg/communications.svg" />Feedbacks
+            <span  class="space">{{reviewsCount}}</span>
+          </h1>
+          <h1 v-if="users" class="divider">
+            <img src="../assets/svg/business.svg" />Voulnteers
+            <span class="space" >{{usersCount}}</span>
+          </h1>
+          <h1 class="divider">
+            <img  src="../assets/svg/maps-and-flags.svg" />Countries
+            <span  class="space">{{countriesCount}}</span>
+          </h1>
+        </div>
+      </section> -->
       <section class="divider-container width-container">
         <h1 class="details-header">Our community Activity</h1>
         <div class="walk-ways-details">
@@ -44,10 +65,11 @@
             <span v-if="usersCount" class="space" >{{usersCount}}</span>
             <img v-else src="../assets/svg/rolling2.svg" alt="0" />
           </h1>
-          <!-- <h1 class="divider">
-            <img src="../assets/svg/maps-and-flags.svg" />Countries
-            <span class="space">{{countriesCount}}</span>
-          </h1>-->
+          <h1 class="divider">
+            <img  src="../assets/svg/maps-and-flags.svg" />Countries
+            <span v-if="countriesCount" class="space">{{countriesCount}}</span>
+            <img v-else src="../assets/svg/rolling2.svg" alt="0" />
+          </h1>
         </div>
       </section>
 
@@ -68,9 +90,10 @@
       </section>
 
       <section class="carousel-for-mobile width-container">
-        <proj-list-carousel v-if="currProjs" :projs="currProjs" />
+        <proj-list-carousel v-if="currProjs.length" :projs="currProjs" />
         <!-- <proj-list-carousel v-if="projs.length" :projs="projsForDisplay" /> -->
         <img v-else src="../assets/svg/loading.svg" alt />
+        <!-- <img src="../assets/svg/loading.svg" alt /> -->
       </section>
 
       <section class="width-container see-all flex">
@@ -93,6 +116,7 @@ import { projService } from "../services/proj.service.js";
 import socketService from "../services/socket.service.js";
 import markerCard from "../components/marker-card.vue";
 import projListCarousel from "../components/proj/proj-list-carousel.vue";
+import { gsap } from 'gsap';
 
 export default {
   name: "home",
@@ -103,15 +127,14 @@ export default {
       projs: [],
       users: [],
       limit: 6,
-      reviewsCount: null,
-      projsCount: null,
-      usersCount: null
+      reviewsCount: 0,
+      projsCount: 0,
+      usersCount: 0
     };
   },
   async created() {
     window.scrollTo(0, 0);
     this.categories = projService.loadCategoties();
-    await this.$store.dispatch({ type: "loadProjs", limit: this.limit });
     this.reviewsCount = this.$store.getters.reviewsCount;
     if (!this.reviewsCount) {
       this.reviewsCount = await this.$store.dispatch({
@@ -127,6 +150,17 @@ export default {
       this.usersCount = await this.$store.dispatch({ type: "loadUsersCount" });
     }
   },
+  async beforeMount() {
+    await this.$store.dispatch({ type: "loadProjs", limit: this.limit });
+    
+  },
+  async mounted() {
+    this.projs = this.$store.getters.projs;
+      if (!this.projs.length) {
+        this.projs = await this.$store.dispatch({ type: "loadProjs" });
+      }
+     
+  },
   methods: {
     openDetails(id) {
       this.$router.push("/proj/" + id);
@@ -139,10 +173,22 @@ export default {
     countriesCount() {
       return this.$store.getters.countries;
     },
+    // animatedReviewsCount() {
+    //   return this.reviewsCount.toFixed(0);
+    // }
   },
   components: {
     markerCard,
     projListCarousel
-  }
+  },
+  // watch: {
+  //   reviewsCount:{
+  //     hendler(){
+  //       gsap.to(this.$data, { duration: 0.5, animatedReviewsCount: this.reviewsCount })
+  //     },
+  //     deep: true
+  //   }
+    
+  // },
 };
 </script>

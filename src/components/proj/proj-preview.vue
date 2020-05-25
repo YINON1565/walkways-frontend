@@ -2,8 +2,15 @@
   <div class="proj-preview">
     <router-link :to="'/proj/' + proj._id" class="proj-card flex col">
     <div class="details-img">
-      <img src="../../assets/png/fully-booked.png" v-if="proj.membersApplyed.length === proj.membersNeeded" class = "fully-booked"/>
-      <img v-bind:src="proj.imgUrls[0]" v-if="proj.imgUrls" class="" />
+      <img src="../../assets/png/fully-booked.png" v-if="proj.membersApplyed.length === proj.membersNeeded && isLoad" class = "fully-booked" />
+      <img
+          :src="proj.imgUrls[0]"
+          class="proj-img"
+          :class="{isLoad}"
+          @error="onErrorImg"
+          @load="isLoad = true"
+        />
+        <img v-if="!isLoad" src="../../assets/svg/ripple.svg" class="ripple-img" :class="{isLoad}" />
     </div>
       <div class="proj-txt">
         <div class="proj-txt-header">
@@ -36,6 +43,16 @@ export default {
   name: "projPreview",
   props: {
     proj: Object
+  },
+  data() {
+    return {
+      isLoad: false
+    }
+  },
+  methods: {
+    onErrorImg(ev){
+      ev.target.src = require('../../assets/svg/broken.svg')
+    }
   },
   computed: {
     projCategory() {

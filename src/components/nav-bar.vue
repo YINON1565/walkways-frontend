@@ -140,7 +140,6 @@ export default {
       }
     },
     async onGoToSearchPage(ev) {
-      console.log(ev.target.value);
       if (this.openMenu) {
         this.toggleMemu();
       }
@@ -169,8 +168,6 @@ export default {
       }
     },
     toggleMemu() {
-      console.log(123);
-
       this.isActive = false;
       this.openMenu = !this.openMenu;
       document.body.classList.toggle("menu-open");
