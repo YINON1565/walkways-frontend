@@ -1,6 +1,9 @@
 <template>
   <transition name="fade">
     <div class="home">
+       <div v-if="isLoading" class="save-loading">
+        <img src="../assets/svg/rolling2.svg" alt />
+      </div>
       <div class="video-bcg">
         <video autoplay muted loop id="myVideo">
           <source src="../assets/video/heroHeader.mp4" type="video/mp4" />
@@ -14,18 +17,36 @@
           <span class="gandy">Mahatma Gandhi</span>
         </p>
       </div>
-      <div class="category-container width-container">
-        <router-link
-          :to="'/projs/' + category.category"
-          v-for="category in categories"
-          :key="category.category"
-          :class="category.category"
-          class="category"
-        >
-          <img :src="category.imgUrl" />
-          <div class="img-tag" :class="category.category">{{category.title}}</div>
-        </router-link>
-      </div>
+      <section class="about-container width-container">
+        <!-- <h2>About the venture</h2> -->
+        <title-link :title="'About the venture'"/>
+        <h3>
+          <span>{{about.substring(0, 100)}}</span>
+          <span v-if="!isReadMore">... 
+            <span class="read-more pointer" @click="isReadMore = !isReadMore">Read more</span>
+          </span>
+          <span class="more-txt" :class="{isReadMore}">
+            {{about.substring(100)}}
+            <span class="read-more pointer" @click="isReadMore = !isReadMore">Read less</span>
+          </span>
+        </h3>
+      </section>
+
+      <section>
+        <title-link class="category-title width-container" :title="'Find by category'"/>
+        <div class="category-container width-container">
+          <router-link
+            :to="'/projs/' + category.category"
+            v-for="category in categories"
+            :key="category.category"
+            :class="category.category"
+            class="category"
+          >
+            <img :src="category.imgUrl" />
+            <div class="img-tag" :class="category.category">{{category.title}}</div>
+          </router-link>
+        </div>
+      </section>
       <!-- <section class="divider-container width-container">
         <h1 class="details-header">Our community Activity</h1>
         <div class="walk-ways-details">
@@ -46,7 +67,7 @@
             <span  class="space">{{countriesCount}}</span>
           </h1>
         </div>
-      </section> -->
+      </section>-->
       <section class="divider-container width-container">
         <h1 class="details-header">Our community Activity</h1>
         <div class="walk-ways-details">
@@ -62,16 +83,19 @@
           </h1>
           <h1 v-if="users" class="divider">
             <img src="../assets/svg/business.svg" />Voulnteers
-            <span v-if="usersCount" class="space" >{{usersCount}}</span>
+            <span v-if="usersCount" class="space">{{usersCount}}</span>
             <img v-else src="../assets/svg/rolling2.svg" alt="0" />
           </h1>
           <h1 class="divider">
-            <img  src="../assets/svg/maps-and-flags.svg" />Countries
+            <img src="../assets/svg/maps-and-flags.svg" />Countries
             <span v-if="countriesCount" class="space">{{countriesCount}}</span>
             <img v-else src="../assets/svg/rolling2.svg" alt="0" />
           </h1>
         </div>
       </section>
+
+
+      <title-link class="width-container" :title="'Around-the-world'"/>
 
       <section class="carousel-for-desctop width-container">
         <ul v-if="currProjs.length" class="around-the-world-preview">
@@ -116,7 +140,8 @@ import { projService } from "../services/proj.service.js";
 import socketService from "../services/socket.service.js";
 import markerCard from "../components/marker-card.vue";
 import projListCarousel from "../components/proj/proj-list-carousel.vue";
-import { gsap } from 'gsap';
+import { gsap } from "gsap";
+import titleLink from '../components/helpers/title-link.vue'
 
 export default {
   name: "home",
@@ -129,10 +154,15 @@ export default {
       limit: 6,
       reviewsCount: 0,
       projsCount: 0,
-      usersCount: 0
+      usersCount: 0,
+      about:
+        "WalkWays is the world’s leading volunteering platform. We show you how to volunteer abroad! Search & compare the best international volunteer programs offered by volunteer organizations and local NGOs with just a few clicks.",
+      isReadMore: false,
+      isLoading: false,
     };
   },
   async created() {
+    this.toggleLoading()
     window.scrollTo(0, 0);
     this.categories = projService.loadCategoties();
     this.reviewsCount = this.$store.getters.reviewsCount;
@@ -149,22 +179,25 @@ export default {
     if (!this.usersCount) {
       this.usersCount = await this.$store.dispatch({ type: "loadUsersCount" });
     }
+    this.toggleLoading()
   },
   async beforeMount() {
     await this.$store.dispatch({ type: "loadProjs", limit: this.limit });
-    
   },
   async mounted() {
     this.projs = this.$store.getters.projs;
-      if (!this.projs.length) {
-        this.projs = await this.$store.dispatch({ type: "loadProjs" });
-      }
-     
+    if (!this.projs.length) {
+      this.projs = await this.$store.dispatch({ type: "loadProjs" });
+    }
   },
   methods: {
     openDetails(id) {
       this.$router.push("/proj/" + id);
-    }
+    },
+    toggleLoading() {
+      this.isLoading = !this.isLoading;
+      document.body.classList.toggle("loading-active");
+    },
   },
   computed: {
     currProjs() {
@@ -172,15 +205,16 @@ export default {
     },
     countriesCount() {
       return this.$store.getters.countries;
-    },
+    }
     // animatedReviewsCount() {
     //   return this.reviewsCount.toFixed(0);
     // }
   },
   components: {
     markerCard,
-    projListCarousel
-  },
+    projListCarousel,
+    titleLink
+  }
   // watch: {
   //   reviewsCount:{
   //     hendler(){
@@ -188,7 +222,7 @@ export default {
   //     },
   //     deep: true
   //   }
-    
+
   // },
 };
 </script>

@@ -246,7 +246,8 @@ select {
         p {
             margin: 8px 0;
             font-size: 22px;
-           
+            color: #6a86e0;
+            text-transform: capitalize;
         }
         img {
             width: 30px;
@@ -255,13 +256,13 @@ select {
         cursor: pointer;
         width: fit-content;
         padding: rem(15px) rem(30px);
-        border-radius: 100vh;
+        // border-radius: 100vh;
         // color: $clr3;
         // color: #e3f2ff;
-        background-color: #5550760a;
-        transition: color .3s, background-color .3s;
+        // background-color: #5550760a;
+        // transition: color .3s, background-color .3s;
         &:hover {
-            background-color: aliceblu
+            // background-color: aliceblu
         }
 
     }
