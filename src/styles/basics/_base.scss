@@ -276,6 +276,26 @@ select {
     width: 150px;
     z-index: 10;
 }
+.proj-preview-carousel-desktop {
+
+    .el-carousel__arrow {
+        color: #000;
+        background-color: #ffffffa3;
+        box-shadow: $shadow3;
+        width: 40px;
+        height: 40px;
+        top: 25%;
+    }
+}
+.el-carousel__arrow {
+    display: none;
+}
+
+.multi-img {
+    .el-carousel__arrow {
+        display: block;
+    }
+}
 
 // .h1-l {@include h1-l;}
 // .h1-s {@include h1-s;}

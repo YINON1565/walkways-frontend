@@ -19,8 +19,8 @@
             <img class="rolling2-loader" src="../../assets/svg/rolling2.svg" alt />
             <p>Wait a few moments</p>
           </section>
-          <div v-else-if="proj.imgUrls.length" class="img-proj-container ratio-16-9">
-            <el-carousel indicator-position="outside">
+          <div v-else-if="proj.imgUrls && proj.imgUrls.length" class="img-proj-container ratio-16-9">
+            <el-carousel indicator-position="outside" :class="{'multi-img': proj.imgUrls.length > 1}">
               <el-carousel-item v-for="(imgUrl, index) in proj.imgUrls" :key="index">
                 <!-- <img :src="imgUrl" /> -->
                 <img

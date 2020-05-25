@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
-    <div v-if="proj">
-      <el-carousel class="ratio-16-9">
+    <div v-if="proj" class="proj-preview-carousel-desktop">
+      <el-carousel class="ratio-16-9" :class="{'multi-img': proj.imgUrls && proj.imgUrls.length > 1}">
         <el-carousel-item v-for="url in proj.imgUrls" :key="url">
          <img src="../assets/png/fully-booked.png" v-if="proj.membersApplyed.length === proj.membersNeeded" class = "fully-booked"/>
 

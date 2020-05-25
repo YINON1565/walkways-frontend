@@ -8,9 +8,12 @@
                 height: 50px;
                 margin-inline-end: 1.2ch;
                 display: none;  
-                &.isLoad, &.ripple-img {
+                &.isLoad {
                   display: block;  
-                  background-color: initial;
+                }
+                &.ripple-img {
+                    display: block;  
+                    background-color: initial;
                 }
             }
         }

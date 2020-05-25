@@ -88,7 +88,7 @@
       <review-add
         v-if="!loggedinUser || (loggedinUser && loggedinUser._id !== user._id)"
         :review="review"
-        @save="save"
+        @saveReview="saveReview"
       />
 
       <!--CMP LIST REVIEWS-->
@@ -187,7 +187,7 @@ export default {
     });
 
     },
-    async save(review) {
+    async saveReview(review) {
       await this.$store.dispatch({
         type: "saveReview",
         review
