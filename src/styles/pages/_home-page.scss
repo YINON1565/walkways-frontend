@@ -9,10 +9,14 @@
 
     .titles{
         // text-align: center;
-        font-size:rem(24px);
+        font-size:rem(14px);
         font-family: Sen;
         font-weight: lighter;
         padding: rem(18px);
+        text-transform: capitalize;
+        @include for-mini-mobile-layout {
+            font-size:rem(18px);
+        }
         @include for-mobile-layout {
             font-size: rem(28px);
         }
@@ -23,15 +27,16 @@
     }
 
     .container-link-img {
-               text-transform: capitalize;
-               font-size: 21px;
-               font-weight: 900;
-               font-weight: lighter;
-             
-               @include for-mobile-layout {
-                   font-size: 28px;
-   
-               }
+        text-transform: capitalize;
+        font-size: 14px;
+        font-weight: 900;
+        font-weight: lighter;
+        @include for-mini-mobile-layout {
+         font-size:rem(21px);
+        }
+        @include for-mobile-layout {
+            font-size: 28px;
+        }
     }
     margin-bottom: rem(50px);
     .loading-container {
@@ -81,14 +86,16 @@
             
         h2{
             border-bottom: unset;
-            font-size:rem(30px);
+            font-size:rem(20px);
             font-family: Sen;
             font-weight: lighter;
             padding-bottom: unset;
             margin-top: unset;
+            @include for-mini-mobile-layout {
+                font-size:rem(30px);
+            }
             @include for-mobile-layout{
                 font-size:rem(45px);
-
             }
             
         }
