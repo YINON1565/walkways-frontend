@@ -2,7 +2,7 @@
   <transition name="fade">
     <div class="home">
        <div v-if="isLoading" class="save-loading">
-        <img src="../assets/svg/rolling2.svg" alt />
+        <img src="" alt />
       </div>
       <div class="video-bcg">
         <video autoplay muted loop id="myVideo">
@@ -17,11 +17,14 @@
           <span class="gandy">Mahatma Gandhi</span>
         </p>
       </div>
-      <section class="about-container width-container">
+      <section class="about-container">
         <!-- <h2>About the venture</h2> -->
-        <title-link :title="'About the venture'"/>
-        <h3>
-          <span>{{about.substring(0, 100)}}</span>
+        <div class="take-a-walk-container">
+        <img src="../assets/svg/WalkingMan.svg" class="walking"/>
+        <title-link :title="'Take A Walk With Us'" class="title"/>
+        </div>
+        <h3 class="width-container">
+          <span>{{about.substring(0, 170)}}</span>
           <span v-if="!isReadMore">... 
             <span class="read-more pointer" @click="isReadMore = !isReadMore">Read more</span>
           </span>
@@ -33,7 +36,7 @@
       </section>
 
       <section>
-        <title-link class="category-title width-container" :title="'Find by category'"/>
+        <h2  class="width-container titles find-By">Find by category</h2>
         <div class="category-container width-container">
           <router-link
             :to="'/projs/' + category.category"
@@ -95,7 +98,7 @@
       </section>
 
 
-      <title-link class="width-container" :title="'Around-the-world'"/>
+      <h2 class="width-container titles">Projects around the world</h2>
 
       <section class="carousel-for-desctop width-container">
         <ul v-if="currProjs.length" class="around-the-world-preview">
@@ -126,7 +129,7 @@
           title="Show more about 'around the world'"
           to="/projs/aroundTheWorld"
         >
-          <p>All Projects</p>
+          <p>Explore more</p>
           <img src="../assets/svg/technology.svg" alt />
         </router-link>
       </section>
@@ -141,7 +144,7 @@ import socketService from "../services/socket.service.js";
 import markerCard from "../components/marker-card.vue";
 import projListCarousel from "../components/proj/proj-list-carousel.vue";
 import { gsap } from "gsap";
-import titleLink from '../components/helpers/title-link.vue'
+import titleLink from '../components/helpers/title-link.vue';
 
 export default {
   name: "home",
@@ -155,8 +158,7 @@ export default {
       reviewsCount: 0,
       projsCount: 0,
       usersCount: 0,
-      about:
-        "WalkWays is the world’s leading volunteering platform. We show you how to volunteer abroad! Search & compare the best international volunteer programs offered by volunteer organizations and local NGOs with just a few clicks.",
+      about:"WalkWays is an award-winning volunteer travel organisation, offering life-changing experiences across more than 20 countries in Africa, Asia & South America. WalkWays provide a safe, structured and social platform with volunteer travel opportunities available from 1-40 weeks. With over 10 years of experience and expertise, WalkWays is widely regarded as the global leader in affordable and trustworthy international volunteering experiences.",
       isReadMore: false,
       isLoading: false,
     };
@@ -213,7 +215,7 @@ export default {
   components: {
     markerCard,
     projListCarousel,
-    titleLink
+    titleLink,
   }
   // watch: {
   //   reviewsCount:{

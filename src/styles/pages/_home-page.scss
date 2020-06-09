@@ -1,8 +1,33 @@
 .home {
+
+    .find-By{
+        display: none;
+        @include for-normal-layout{
+            display: block;
+        }
+    }
+
+    .titles{
+        // text-align: center;
+        font-size:rem(24px);
+        font-family: Sen;
+        font-weight: lighter;
+        padding: rem(18px);
+        @include for-mobile-layout {
+            font-size: rem(28px);
+        }
+        @include for-normal-layout {
+            font-size: rem(35px);
+            padding: rem(20px);
+        }
+    }
+
     .container-link-img {
                text-transform: capitalize;
                font-size: 21px;
                font-weight: 900;
+               font-weight: lighter;
+             
                @include for-mobile-layout {
                    font-size: 28px;
    
@@ -20,14 +45,69 @@
     }
 
     .about-container {   
+        overflow: hidden;
+
+        .walking{
+            width:rem(30px);
+            margin-right:100vw;
+
+            animation: walking 10s infinite linear;
+            @keyframes walking {
+                25% {
+                    transform: translate(25vw, 0px);
+                }
+                50% {
+                    transform: translate(50vw, 0px);
+                }
+                75% {
+                    transform: translate(75vw,0px);
+                }
+                100% {
+                    transform: translate(100vw,0px);
+                }
+            };
+            @include for-mobile-layout{
+
+               width:rem(60px);
+             
+            }
+        }
+        .take-a-walk-container{
+            background-color: lighten($clr2, 20%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+        h2{
+            border-bottom: unset;
+            font-size:rem(30px);
+            font-family: Sen;
+            font-weight: lighter;
+            padding-bottom: unset;
+            margin-top: unset;
+            @include for-mobile-layout{
+                font-size:rem(45px);
+
+            }
+            
+        }
+        }
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+    
         h3 {
             // height: calc(180px - 15vw) ;
+            background-color: #3a334205;
             font-size: 16px;
-            line-height: 32px;
+            text-align: center;
+            font-weight: lighter;
+            line-height: 1.3;
             @include for-mobile-layout {
                 font-size: 24px;
                 line-height: 40px;
-
             }
             // section { 
                 .more-txt{
@@ -247,6 +327,7 @@
         grid-template-columns: 230px 290px 230px minmax(200px, 290px);
         // grid-template-columns: 3fr 4fr 3fr 4fr;
         grid-template-rows: 200px 100px 150px 150px 200px;
+        padding-top: unset;
         // grid-template-rows: 4fr 2fr 3fr 3fr 3fr;
         .scubaDiving {
             grid-row: 1/3;
@@ -371,7 +452,7 @@
     position: absolute;
     font-family: Sen;
     left: 50%;
-    top: rem(170px);
+    top: rem(190px);
     transform: translate(-50%, -50%);
     text-align: center;
     width: 100%;
@@ -565,7 +646,8 @@
     font-size: rem(20px);
     text-align: center;
     font-weight: lighter;
-    margin: 0 0 10px 0;
+    margin: 0 0 12px 0;
+    font-family: Sen;
     @include for-mobile-layout {
         font-size: rem(40px);
     }

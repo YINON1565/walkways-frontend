@@ -1,6 +1,4 @@
-// const GAPI_KEY = 'AIzaSyDT_ajKa9WIv5XuaigihgiGJKXyRAXIV7o';
-const GAPI_KEY = 'AIzaSyBTEWMtjziTWSwBzkhZYC3jc-q2KAXBkkE';
-// const GAPI_KEY = 'AIzaSyAfOgP37XV4mv6RcyxIwOk1ajVevIhN2TM'; 
+const GAPI_KEY = 'AIzaSyChmoEVbRL_xzeO3BbQ16dPBxK0l-YzV20';
 
 export default {
     searchPosition,
