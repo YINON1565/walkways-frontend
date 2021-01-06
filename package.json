@@ -14,7 +14,7 @@
     },
     "dependencies": {
         "@google/maps": "^1.1.0",
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "cloudinary": "^1.20.0",
         "core-js": "^3.6.4",
         "element-ui": "^2.13.0",
